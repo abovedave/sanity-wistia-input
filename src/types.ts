@@ -40,6 +40,10 @@ export interface WistiaAPIMedias {
   thumbnail: WistiaAPIMediaThumbnail
 }
 
+export interface WistaMediasGrouped {
+  [key: string]: WistiaAPIMedias[]
+}
+
 export interface WistiaAPIMediaThumbnail {
   url: string,
   width: number,
