@@ -1,5 +1,5 @@
 {
-  "name": "sanity-plugin-sanity-wistia-input",
+  "name": "sanity-plugin-wistia-input",
   "version": "1.0.0",
   "description": "Wistia input for Sanity v3",
   "keywords": [

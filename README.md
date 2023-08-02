@@ -1,4 +1,4 @@
-# sanity-wistia-input
+# sanity-plugin-wistia-input
 
 > This is a **Sanity Studio v3** plugin.
 > 
@@ -11,7 +11,7 @@
 ## Installation
 
 ```sh
-npm install sanity-wistia-input
+npm install sanity-plugin-wistia-input
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ Add it as a plugin in `sanity.config.ts` (or .js):
 
 ```ts
 import { defineConfig } from 'sanity'
-import { wistiaInput } from 'sanity-wistia-input'
+import { wistiaInput } from 'sanity-plugin-wistia-input'
 
 export default defineConfig({
   //...

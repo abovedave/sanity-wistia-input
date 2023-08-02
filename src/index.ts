@@ -5,7 +5,7 @@ import { wistiaMedia } from './schema'
 import { wistiaMediaRender } from './plugin'
 
 export const wistiaInput = definePlugin<Config>((config) => ({
-  name: 'sanity-plugin-sanity-wistia-input',
+  name: 'sanity-plugin-wistia-input',
   schema: {
     types: [
       {
