@@ -2,9 +2,14 @@
   "name": "sanity-plugin-wistia-input",
   "version": "1.0.0",
   "description": "Wistia input for Sanity v3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abovedave/sanity-wistia-input.git"
+  },
   "keywords": [
     "sanity",
-    "sanity-plugin"
+    "sanity-plugin",
+    "wistia"
   ],
   "license": "MIT",
   "author": "David Longworth <djl.fyi@sent.com>",
