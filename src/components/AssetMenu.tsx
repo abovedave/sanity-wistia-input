@@ -29,7 +29,7 @@ export function AssetMenu({
             }}
           />
           <MenuItem
-            text="Copy emebd URL" 
+            text="Copy embed URL" 
             icon={ClipboardIcon}
             onClick={() => {
               onAction({ type: 'copyUrl' })
