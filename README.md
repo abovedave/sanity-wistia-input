@@ -37,7 +37,7 @@ export default defineConfig({
 ```js
 {
 	id: 123456,
-	hash_id: 'abc123'
+	hashed_id: 'abc123'
 }
 ```
 
