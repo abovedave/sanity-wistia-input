@@ -6,7 +6,7 @@
 
 [Wistia](https://wistia.com/) input plugin for [Sanity](https://sanity.io/) that stores the media ID and hash ID for displaying on the front-end.
 
-![Empty state](./assets/wistia-input-video.png)
+![Plugin with a video selected](https://github.com/abovedave/sanity-wistia-input/raw/main/assets/wistia-input-video.png)
 
 ## Installation
 
