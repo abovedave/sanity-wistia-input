@@ -1,11 +1,17 @@
-# sanity-plugin-sanity-wistia-input
+# sanity-wistia-input
 
 > This is a **Sanity Studio v3** plugin.
+> 
+## What is it?
+
+[Wistia](https://wistia.com/) input plugin for [Sanity](https://sanity.io/) that stores the media ID and hash ID for displaying on the front-end.
+
+![Empty state](./assets/wistia-input-video.png)
 
 ## Installation
 
 ```sh
-npm install sanity-plugin-sanity-wistia-input
+npm install sanity-wistia-input
 ```
 
 ## Usage
@@ -13,18 +19,31 @@ npm install sanity-plugin-sanity-wistia-input
 Add it as a plugin in `sanity.config.ts` (or .js):
 
 ```ts
-import {defineConfig} from 'sanity'
-import {myPlugin} from 'sanity-plugin-sanity-wistia-input'
+import { defineConfig } from 'sanity'
+import { wistiaInput } from 'sanity-wistia-input'
 
 export default defineConfig({
   //...
-  plugins: [myPlugin({})],
+  plugins: [
+    wistiaInput({
+      token: '<your token here>'
+    }),
+  ],
 })
+```
+
+## Data model
+
+```js
+{
+	id: 123456,
+	hash_id: 'abc123'
+}
 ```
 
 ## License
 
-[MIT](LICENSE) © David Longworth
+[MIT](LICENSE) © David Longworth. WISTIA is a trademark of Wistia, Inc. and has no affiliation with this project.
 
 ## Develop & test
 

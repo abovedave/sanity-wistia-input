@@ -62,10 +62,7 @@ const WistiaInputComponent = (props) => {
           >
             <Text size={1} weight='semibold' cellPadding={2}>
               <PlayIcon style={{marginLeft: 3, marginRight: 3}} />
-              Wistia video ID: <a href="" target="_blank">
-                {value?.id}
-                <ShareIcon style={{marginLeft: 1}} />
-              </a>
+              Wistia video ID: {value?.id}
             </Text>
             <AssetMenu onAction={handleAssetMenu} />
           </Flex>
