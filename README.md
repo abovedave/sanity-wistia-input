@@ -36,10 +36,13 @@ export default defineConfig({
 
 ```js
 {
-	id: 123456,
-	hashed_id: 'abc123'
+  id: 123456,
+  hashed_id: 'abc123'
 }
 ```
+
+* `id` can be used to query the [Wistia Data API](https://wistia.com/support/developers/data-api).
+* `hashed_id` can be used to load an iframe on the front end i.e., https://fast.wistia.net/embed/iframe/`hashed_id`.
 
 ## License
 
