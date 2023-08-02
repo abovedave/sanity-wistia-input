@@ -2,7 +2,7 @@ const playerUrl = (videoUrl: string) => {
   let params = new URLSearchParams()
 
   // https://wistia.com/support/developers/embed-options#options
-  let wistiaSettings = {
+  let wistiaSettings: any = {
     playbar: true,
     playButton: true,
     seo: false,

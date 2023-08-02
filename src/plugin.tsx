@@ -1,11 +1,13 @@
-import React from 'react'
+import { ObjectInputProps } from 'sanity'
 
 import Input from './components/Input'
 
-export function wistiaMediaRender(config) {
+import { Config } from './types'
+
+export function wistiaMediaRender(config: Config) {
   return {
     components: {
-      input: (props) => <Input config={config} {...props} />,
+      input: (props: ObjectInputProps) => <Input config={config} {...props} />,
     },
   }
 }

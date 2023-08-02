@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react'
 import { Button, Dialog, Card, Flex, Text, useToast } from '@sanity/ui'
-import { DocumentVideoIcon, ChevronLeftIcon, PlayIcon, ShareIcon } from '@sanity/icons'
+import { DocumentVideoIcon, ChevronLeftIcon, PlayIcon } from '@sanity/icons'
 import { set, unset } from 'sanity'
+
+import { AssetMediaActions, WistiaMedia, WistiaInputProps } from '../types'
 
 import Projects from './Projects'
 import Videos from './Videos'
@@ -9,13 +11,13 @@ import Videos from './Videos'
 import { Player } from './Player'
 import { AssetMenu } from './AssetMenu'
 
-const WistiaInputComponent = (props) => {
+const WistiaInputComponent = (props: WistiaInputProps) => {
   const { value, onChange, config } = props
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedProjectId, setSelectedProjectId] = useState(0)
 
-  const handleChange = useCallback((newValue) => {
+  const handleChange = useCallback((newValue: WistiaMedia) => {
     setIsModalOpen(false)
     onChange(newValue ? set(newValue) : unset())
   }, [onChange])
@@ -24,7 +26,7 @@ const WistiaInputComponent = (props) => {
     setSelectedProjectId(projectId)
   }
 
-  const handleAssetMenu = (action) => {
+  const handleAssetMenu = (action: AssetMediaActions) => {
     switch (action?.type) {
       case 'copyUrl': handleCopyURL(); break;
       case 'delete': handleChange({}); break;

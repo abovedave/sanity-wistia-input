@@ -2,11 +2,16 @@ import { useEffect, useState } from 'react'
 import { Spinner, Card, Flex, Text, Box, Menu, MenuItem, Tooltip } from '@sanity/ui'
 import { LockIcon } from '@sanity/icons'
 
-const WistiaProjectsComponent = ({ onProjectClick, config }) => {
+import { Config, WistaAPIProject } from '../types'
+
+const WistiaProjectsComponent = (
+  { onProjectClick, config }:
+  { onProjectClick: Function, config: Config }
+) => {
   const [wistiaProjects, setWistiaProjects] = useState([])
   const [loading, setLoading] = useState(false)
 
-  const handleProjectClick = (projectId: string) => {
+  const handleProjectClick = (projectId: number) => {
     onProjectClick(projectId)
   }
 
@@ -51,7 +56,7 @@ const WistiaProjectsComponent = ({ onProjectClick, config }) => {
           </Card>
         }
         
-        {wistiaProjects?.map((project) => (
+        {wistiaProjects?.map((project: WistaAPIProject) => (
           <MenuItem
             key={project.id}
             style={{ cursor: 'pointer' }}

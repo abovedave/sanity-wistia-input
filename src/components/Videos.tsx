@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react'
 import { Spinner, Card, Flex, Text, Box, Menu, MenuItem, Heading } from '@sanity/ui'
+import { WistiaMedia, WistiaAPIMedias, Config } from '../types'
 
-const groupBy = (array, key) => {
-  return array.reduce((rv, x) => {
+const groupBy = (array: Array<WistiaAPIMedias>, key: string) => {
+  return array.reduce((rv: any, x: any) => {
     (rv[x[key]] = rv[x[key]] || []).push(x)
     return rv
   }, {})
 }
 
-const wistiaMediasComponent = ({ onVideoClick, projectId, config }) => {
+const wistiaMediasComponent = (
+  { onVideoClick, projectId, config }:
+  { onVideoClick: Function, projectId: number, config: Config}
+) => {
   const [wistiaMedias, setwistiaMedias] = useState({})
   const [loading, setLoading] = useState(false)
 
-  const handleVideoClick = (media) => {
+  const handleVideoClick = (media: WistiaMedia) => {
     onVideoClick(media)
   }
 
@@ -69,7 +73,7 @@ const wistiaMediasComponent = ({ onVideoClick, projectId, config }) => {
                 <Heading as="h2" size={1}>{section}</Heading>
               </Card>
             )}
-            {wistiaMedias[section].map((media) => (
+            {wistiaMedias[section].map((media: WistiaAPIMedias) => (
               <MenuItem
                 paddingX={3}
                 paddingY={2}
