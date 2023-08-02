@@ -42,7 +42,7 @@ export default defineConfig({
 ```
 
 * `id` can be used to query the [Wistia Data API](https://wistia.com/support/developers/data-api).
-* `hashed_id` can be used to load an iframe on the front end i.e., https://fast.wistia.net/embed/iframe/`hashed_id`.
+* `hashed_id` can be used to load an iframe on the front end i.e., `https://fast.wistia.net/embed/iframe/<hashed_id>`
 
 ## License
 
@@ -51,7 +51,7 @@ export default defineConfig({
 ## Develop & test
 
 This plugin uses [@sanity/plugin-kit](https://github.com/sanity-io/plugin-kit)
-with default configuration for build & watch scripts.
+[Title](.prettierignore)with default configuration for build & watch scripts.
 
 See [Testing a plugin in Sanity Studio](https://github.com/sanity-io/plugin-kit#testing-a-plugin-in-sanity-studio)
 on how to run this plugin with hotreload in the studio.
