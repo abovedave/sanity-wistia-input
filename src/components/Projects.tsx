@@ -8,8 +8,9 @@ const WistiaProjectsComponent = (
   { onProjectClick, config }:
   { onProjectClick: Function, config: Config }
 ) => {
-  const [wistiaProjects, setWistiaProjects] = useState([])
+  const [wistiaProjects, setWistiaProjects] = useState<WistaAPIProject[]>([])
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleProjectClick = (projectId: number) => {
     onProjectClick(projectId)
@@ -29,12 +30,37 @@ const WistiaProjectsComponent = (
       headers: headers,
     })
       .then((response) => {
+        if (!response.ok) {
+          if (response?.status === 401) {
+            setError('401 Not authorised - check your API key permissions.')
+          } else {
+            setError(`${response?.status} error`)
+          }
+        }
+
         setLoading(false)
         return response.json()
       })
       .then((data) => setWistiaProjects(data))
       .catch((error) => console.error(error))
   }, [])
+
+  if (error) {
+    return (
+      <Box padding={3}>
+        <Card
+          padding={[3, 3, 4]}
+          radius={2}
+          shadow={1}
+          tone="critical"
+        >
+          <Text align="center">
+            {error}
+          </Text>
+        </Card>
+      </Box>
+    )
+  }
 
   return (
     <Box padding={1}>
@@ -56,7 +82,7 @@ const WistiaProjectsComponent = (
           </Card>
         }
         
-        {wistiaProjects?.map((project: WistaAPIProject) => (
+        {wistiaProjects?.length ? wistiaProjects?.map((project: WistaAPIProject) => (
           <MenuItem
             key={project.id}
             style={{ cursor: 'pointer' }}
@@ -90,7 +116,14 @@ const WistiaProjectsComponent = (
               </Flex>
             </Box>
           </MenuItem>
-        ))}
+        )) 
+        : (!loading &&
+          <Card padding={4}>
+            <Text align="center" muted size={1}>
+              No projects found.
+            </Text>
+          </Card>
+        )}
       </Menu>
     </Box>
   )

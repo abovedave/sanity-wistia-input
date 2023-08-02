@@ -66,7 +66,7 @@ const wistiaMediasComponent = (
           </Card>
         }
 
-        {Object.keys(wistiaMedias)?.map((section, index) => (
+        {Object.keys(wistiaMedias)?.length ? Object.keys(wistiaMedias)?.map((section, index) => (
           <div key={projectId + index}>
             {section !== 'undefined' && (
               <Card padding={3}>
@@ -97,7 +97,13 @@ const wistiaMediasComponent = (
               </MenuItem>
             ))}
           </div>
-        ))}
+        )) : (!loading && 
+          <Card padding={4}>
+            <Text align="center" muted size={1}>
+              No media found.
+            </Text>
+          </Card>
+        )}
       </Menu>
     </Box>
   )

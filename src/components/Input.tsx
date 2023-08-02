@@ -48,6 +48,21 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     setIsModalOpen(!isModalOpen)
   }
 
+  if (!config?.token?.length) {
+    return (
+      <Card
+        padding={[3, 3, 4]}
+        radius={2}
+        shadow={1}
+        tone="critical"
+      >
+        <Text align="center">
+          Missing required API token in Sanity config. <a href="https://wistia.com/support/developers/making-api-requests">See Wistia documentation.</a>
+        </Text>
+      </Card>
+    )
+  }
+
   return (
     <div style={{padding: 1}}>
       {videoUrl ? (
