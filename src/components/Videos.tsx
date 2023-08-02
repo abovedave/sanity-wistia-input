@@ -8,16 +8,19 @@ const groupBy = (array, key) => {
   }, {})
 }
 
-const WistiaVideosComponent = ({ onVideoClick, projectId, config }) => {
-  const [wistiaVideos, setWistiaVideos] = useState({})
+const wistiaMediasComponent = ({ onVideoClick, projectId, config }) => {
+  const [wistiaMedias, setwistiaMedias] = useState({})
+  const [loading, setLoading] = useState(false)
 
-  const handleVideoClick = (videoId: string) => {
-    onVideoClick(videoId)
+  const handleVideoClick = (media) => {
+    onVideoClick(media)
   }
 
   useEffect(() => {
     if (projectId) {
-      const apiUrl = `https://api.wistia.com/v1/medias.json?project_id=${projectId}`
+      setLoading(true)
+
+      const apiUrl = `https://api.wistia.com/v1/medias.json?project_id=${projectId}&sort_by=name`
 
       const headers = new Headers({
         Authorization: `Bearer ${config.token}`,
@@ -29,8 +32,9 @@ const WistiaVideosComponent = ({ onVideoClick, projectId, config }) => {
       })
         .then((response) => response.json())
         .then((data) => {
+          setLoading(false)
           let grouped = groupBy(data, 'section')
-          return setWistiaVideos(grouped)
+          return setwistiaMedias(grouped)
         })
         .catch((error) => console.error(error))
     }
@@ -41,7 +45,7 @@ const WistiaVideosComponent = ({ onVideoClick, projectId, config }) => {
       <Menu>
         {!projectId && <div>Error loading project</div>}
 
-        {!Object.keys(wistiaVideos).length &&
+        {loading &&
           <Card padding={4}>
             <Flex
               align="center"
@@ -57,34 +61,35 @@ const WistiaVideosComponent = ({ onVideoClick, projectId, config }) => {
             </Flex>
           </Card>
         }
-        {Object.keys(wistiaVideos)?.map((section, index) => (
+
+        {Object.keys(wistiaMedias)?.map((section, index) => (
           <div key={projectId + index}>
             {section !== 'undefined' && (
               <Card padding={3}>
-                <Heading as="h5" size={1}>{section}</Heading>
+                <Heading as="h2" size={1}>{section}</Heading>
               </Card>
             )}
-            {wistiaVideos[section].map((media) => (
+            {wistiaMedias[section].map((media) => (
               <MenuItem
+                paddingX={3}
+                paddingY={2}
                 key={media.id}
                 style={{ cursor: 'pointer' }}
-                onClick={() => handleVideoClick(media.id)}
+                onClick={() => handleVideoClick({ id: media.id, hashed_id: media.hashed_id } )}
               >
-                <Box padding={0}>
-                  <Flex gap={3} align="center">
-                    <img
-                      src={media.thumbnail.url}
-                      width="80"
-                      style={{ borderRadius: 3 }}
-                    />
-                    <Text weight="semibold" align={'left'}>
-                      {media.name}
-                    </Text>
-                    <Text style={{ marginLeft: 'auto' }} muted={true}>
-                      {new Date(media.duration * 1000).toISOString().slice(11, 19)}
-                    </Text>
-                  </Flex>
-                </Box>
+                <Flex gap={3} align="center">
+                  <img
+                    src={media.thumbnail.url}
+                    width="70"
+                    style={{ borderRadius: 3 }}
+                  />
+                  <Text size={1} weight="semibold" align={'left'}>
+                    {media.name}
+                  </Text>
+                  <Text size={1} style={{ marginLeft: 'auto' }} muted={true}>
+                    {new Date(media.duration * 1000).toISOString().slice(11, 19)}
+                  </Text>
+                </Flex>
               </MenuItem>
             ))}
           </div>
@@ -94,4 +99,4 @@ const WistiaVideosComponent = ({ onVideoClick, projectId, config }) => {
   )
 }
 
-export default WistiaVideosComponent
+export default wistiaMediasComponent

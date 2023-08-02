@@ -1,11 +1,15 @@
-export const wistiaVideo = {
-  name: 'wistiaVideo',
+export const wistiaMedia = {
+  name: 'wistiaMedia',
   type: 'object',
-  title: 'Video',
+  title: 'Wistia media',
   fields: [
     {
+      type: 'number',
+      name: 'id',
+    },
+    {
       type: 'string',
-      name: 'assetId',
+      name: 'hashed_id',
     },
   ],
 }

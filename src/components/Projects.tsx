@@ -4,13 +4,16 @@ import { LockIcon } from '@sanity/icons'
 
 const WistiaProjectsComponent = ({ onProjectClick, config }) => {
   const [wistiaProjects, setWistiaProjects] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const handleProjectClick = (projectId: string) => {
     onProjectClick(projectId)
   }
 
   useEffect(() => {
-    const apiUrl = 'https://api.wistia.com/v1/projects.json'
+    setLoading(true)
+
+    const apiUrl = 'https://api.wistia.com/v1/projects.json?sort_by=updated&sort_direction=0'
 
     const headers = new Headers({
       Authorization: `Bearer ${config.token}`,
@@ -20,7 +23,10 @@ const WistiaProjectsComponent = ({ onProjectClick, config }) => {
       method: 'GET',
       headers: headers,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        setLoading(false)
+        return response.json()
+      })
       .then((data) => setWistiaProjects(data))
       .catch((error) => console.error(error))
   }, [])
@@ -28,7 +34,7 @@ const WistiaProjectsComponent = ({ onProjectClick, config }) => {
   return (
     <Box padding={1}>
       <Menu>
-        {!wistiaProjects.length &&
+        {loading &&
           <Card padding={4}>
             <Flex
               align="center"
@@ -44,6 +50,7 @@ const WistiaProjectsComponent = ({ onProjectClick, config }) => {
             </Flex>
           </Card>
         }
+        
         {wistiaProjects?.map((project) => (
           <MenuItem
             key={project.id}

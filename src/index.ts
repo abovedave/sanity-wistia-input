@@ -1,7 +1,7 @@
 import { definePlugin } from 'sanity'
 
-import { wistiaVideo } from './schema'
-import { wistiaVideoRender } from './plugin'
+import { wistiaMedia } from './schema'
+import { wistiaMediaRender } from './plugin'
 
 interface Config {
   token: string | null
@@ -13,8 +13,8 @@ export const wistiaInput = definePlugin<Config | void>((config = {}) => {
     schema:{ 
       types: [
         {
-          ...wistiaVideo,
-          ...wistiaVideoRender(config)
+          ...wistiaMedia,
+          ...wistiaMediaRender(config)
         }
       ]
     },

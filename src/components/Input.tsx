@@ -1,22 +1,46 @@
-import { useEffect, useState } from 'react'
-import { Button, Dialog, Card, Flex, Text, Box, Menu, MenuItem, Tooltip } from '@sanity/ui'
-import { DocumentVideoIcon, ChevronLeftIcon } from '@sanity/icons'
+import { useState, useCallback } from 'react'
+import { Button, Dialog, Card, Flex, Text, useToast } from '@sanity/ui'
+import { DocumentVideoIcon, ChevronLeftIcon, PlayIcon, ShareIcon } from '@sanity/icons'
+import { set, unset } from 'sanity'
 
 import Projects from './Projects'
 import Videos from './Videos'
 
-const WistiaInputComponent = (props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedProjectId, setSelectedProjectId] = useState(null)
-  const [selectedVideoId, setSelectedVideoId] = useState(null)
+import { Player } from './Player'
+import { AssetMenu } from './AssetMenu'
 
-  const handleProjectClick = (projectId) => {
+const WistiaInputComponent = (props) => {
+  const { value, onChange, config } = props
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedProjectId, setSelectedProjectId] = useState(0)
+
+  const handleChange = useCallback((newValue) => {
+    setIsModalOpen(false)
+    onChange(newValue ? set(newValue) : unset())
+  }, [onChange])
+
+  const handleProjectClick = (projectId: number) => {
     setSelectedProjectId(projectId)
   }
 
-  const handleVideoClick = (videoId) => {
-    setSelectedVideoId(videoId)
+  const handleAssetMenu = (action) => {
+    switch (action?.type) {
+      case 'copyUrl': handleCopyURL(); break;
+      case 'delete': handleChange({}); break;
+      case 'select': setIsModalOpen(true); break;
+    }
   }
+
+  const videoUrl = value?.hashed_id
+    ? `https://fast.wistia.net/embed/iframe/${value.hashed_id}` : null
+
+  const { push: pushToast } = useToast()
+  
+  const handleCopyURL = useCallback(() => {
+    navigator.clipboard.writeText(videoUrl || '')
+    pushToast({ closable: true, status: 'success', title: 'The URL is copied to the clipboard' })
+  }, [pushToast, videoUrl])
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
@@ -24,47 +48,69 @@ const WistiaInputComponent = (props) => {
 
   return (
     <div style={{padding: 1}}>
-      <Card
-        tone={'inherit'}
-        border
-        padding={3}
-        style={{borderStyle: 'dashed'}}
-      >
-        <Flex
-          align={'center'}
-          direction={'row'}
-          gap={4}
-          justify="space-between"
+      {videoUrl ? (
+        <Card
+          radius={2}
+          shadow={1}
+          padding={2}
         >
-          <Flex align={'center'} flex={1} gap={2} justify="center">
+          <Flex
+            justify='space-between'
+            align='center'
+            gap={2}
+            marginBottom={2}
+          >
+            <Text size={1} weight='semibold' cellPadding={2}>
+              <PlayIcon style={{marginLeft: 3, marginRight: 3}} />
+              Wistia video ID: <a href="" target="_blank">
+                {value?.id}
+                <ShareIcon style={{marginLeft: 1}} />
+              </a>
+            </Text>
+            <AssetMenu onAction={handleAssetMenu} />
+          </Flex>
+          
+          <Player videoUrl={videoUrl || ''} />
+        </Card>
+      )
+      : (
+        <Card
+          tone={'inherit'}
+          border
+          padding={[3,5]}
+          style={{borderStyle: 'dashed'}}
+        >
+          <Flex
+            align={'center'}
+            direction={'column'}
+            gap={4}
+          >
             <Text muted><DocumentVideoIcon /></Text>
 
             <Text size={1} muted>
-              Select a video from Wistia
+              Select a media from Wistia
             </Text>
-          </Flex>
 
-          <Flex align="center" gap={2} justify="center" wrap="wrap">
             <Button
               mode="ghost"
-              text="Select video"
+              text="Select media"
               onClick={toggleModal}
             />
           </Flex>
-        </Flex>
-      </Card>
+        </Card>
+      )}
 
       {
         isModalOpen && (
           <Dialog
-            header={selectedProjectId ? 'Select a video' : 'Select a project'}
+            header={selectedProjectId ? 'Select media' : 'Select project'}
             id="wistia-projects"
             onClose={toggleModal}
             width={1}
           >
             {!selectedProjectId ?
               <Projects
-                config={props.config}
+                config={config}
                 onProjectClick={handleProjectClick}
               />
             : 
@@ -77,15 +123,15 @@ const WistiaInputComponent = (props) => {
                   >
                     <Button
                       icon={ChevronLeftIcon}
-                      onClick={() => handleProjectClick(null)}
+                      onClick={() => handleProjectClick(0)}
                       mode="ghost"
                       text="Back to projects"
                     />
                   </Card>
                   <Videos
-                    config={props.config}
+                    config={config}
                     projectId={selectedProjectId}
-                    onVideoClick={handleVideoClick}
+                    onVideoClick={handleChange}
                   />
                 </div>
               )
