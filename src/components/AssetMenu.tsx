@@ -1,23 +1,12 @@
-import { Button, MenuButton, Menu, MenuItem, MenuDivider } from '@sanity/ui'
-import { EllipsisVerticalIcon, ResetIcon, ClipboardIcon, SearchIcon } from '@sanity/icons'
+import {Button, MenuButton, Menu, MenuItem, MenuDivider} from '@sanity/ui'
+import {EllipsisVerticalIcon, ResetIcon, ClipboardIcon, SearchIcon} from '@sanity/icons'
 
-import { AssetMediaActions } from '../types'
+import {AssetMediaActions} from '../types'
 
-export function AssetMenu({
-  onAction,
-}: {
-    onAction: (action: AssetMediaActions) => void
-}) {
+export function AssetMenu({onAction}: {onAction: (action: AssetMediaActions) => void}) {
   return (
     <MenuButton
-      button={
-        <Button
-          padding={2}
-          mode="ghost"
-          icon={EllipsisVerticalIcon}
-          tone="default"
-        />
-      }
+      button={<Button padding={2} mode="ghost" icon={EllipsisVerticalIcon} tone="default" />}
       id="asset-menu"
       menu={
         <Menu>
@@ -25,14 +14,14 @@ export function AssetMenu({
             text="Replace media"
             icon={SearchIcon}
             onClick={() => {
-              onAction({ type: 'select' })
+              onAction({type: 'select'})
             }}
           />
           <MenuItem
-            text="Copy embed URL" 
+            text="Copy embed URL"
             icon={ClipboardIcon}
             onClick={() => {
-              onAction({ type: 'copyUrl' })
+              onAction({type: 'copyUrl'})
             }}
           />
           <MenuDivider />
@@ -41,7 +30,7 @@ export function AssetMenu({
             icon={ResetIcon}
             tone="critical"
             onClick={() => {
-              onAction({ type: 'delete' })
+              onAction({type: 'delete'})
             }}
           />
         </Menu>

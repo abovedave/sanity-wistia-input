@@ -22,17 +22,15 @@ const playerUrl = (videoUrl: string) => {
   return `${videoUrl}?${params.toString()}`
 }
 
-export function Player({
-  videoUrl,
-}: {
-  videoUrl: string
-}) {
+export function Player({videoUrl}: {videoUrl: string}) {
   return (
-    <div style={{
-      position: 'relative',
-      paddingTop: '56.25%',
-      height: '0',
-    }}>
+    <div
+      style={{
+        position: 'relative',
+        paddingTop: '56.25%',
+        height: '0',
+      }}
+    >
       <iframe
         allow="autoplay; fullscreen"
         style={{
@@ -45,7 +43,7 @@ export function Player({
           left: '0',
           border: '0',
           display: 'block',
-          borderRadius: '3px'
+          borderRadius: '3px',
         }}
         src={playerUrl(videoUrl) || ''}
       />

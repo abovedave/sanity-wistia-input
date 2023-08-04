@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react'
-import { Spinner, Card, Flex, Text, Box, Menu, MenuItem, Tooltip } from '@sanity/ui'
-import { LockIcon } from '@sanity/icons'
+import {useEffect, useState} from 'react'
+import {Spinner, Card, Flex, Text, Box, Menu, MenuItem, Tooltip} from '@sanity/ui'
+import {LockIcon} from '@sanity/icons'
 
-import { Config, WistaAPIProject } from '../types'
+import {Config, WistaAPIProject} from '../types'
 
-const WistiaProjectsComponent = (
-  { onProjectClick, config }:
-  { onProjectClick: Function, config: Config }
-) => {
+const WistiaProjectsComponent = ({
+  onProjectClick,
+  config,
+}: {
+  onProjectClick: Function
+  config: Config
+}) => {
   const [wistiaProjects, setWistiaProjects] = useState<WistaAPIProject[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -48,15 +51,8 @@ const WistiaProjectsComponent = (
   if (error) {
     return (
       <Box padding={3}>
-        <Card
-          padding={[3, 3, 4]}
-          radius={2}
-          shadow={1}
-          tone="critical"
-        >
-          <Text align="center">
-            {error}
-          </Text>
+        <Card padding={[3, 3, 4]} radius={2} shadow={1} tone="critical">
+          <Text align="center">{error}</Text>
         </Card>
       </Box>
     )
@@ -65,65 +61,58 @@ const WistiaProjectsComponent = (
   return (
     <Box padding={1}>
       <Menu>
-        {loading &&
+        {loading && (
           <Card padding={4}>
-            <Flex
-              align="center"
-              direction="column"
-              gap={3}
-              height="fill"
-              justify="center"
-            >
+            <Flex align="center" direction="column" gap={3} height="fill" justify="center">
               <Spinner muted />
               <Text muted size={1}>
                 Loading projects from Wistia…
               </Text>
             </Flex>
           </Card>
-        }
-        
-        {wistiaProjects?.length ? wistiaProjects?.map((project: WistaAPIProject) => (
-          <MenuItem
-            key={project.id}
-            style={{ cursor: 'pointer' }}
-            onClick={() => handleProjectClick(project.id)}
-          >
-            <Box padding={1}>
-              <Flex justify="space-between" gap={2}>
-                <Text weight="semibold">
-                  {project.name}
-
-                  {!project.public &&
-                    <Tooltip
-                      content={
-                        <Box padding={2}>
-                          <Text muted size={1}>
-                            This project is private
-                          </Text>
-                        </Box>
-                      }
-                      fallbackPlacements={['right', 'left']}
-                      placement="top"
-                      portal
-                    >
-                      <LockIcon style={{ marginLeft: 5 }} />
-                    </Tooltip>
-                  }
-                </Text>
-                <Text muted={true}>
-                  {project.mediaCount}
-                </Text>
-              </Flex>
-            </Box>
-          </MenuItem>
-        )) 
-        : (!loading &&
-          <Card padding={4}>
-            <Text align="center" muted size={1}>
-              No projects found.
-            </Text>
-          </Card>
         )}
+
+        {wistiaProjects?.length
+          ? wistiaProjects?.map((project: WistaAPIProject) => (
+              <MenuItem
+                key={project.id}
+                style={{cursor: 'pointer'}}
+                onClick={() => handleProjectClick(project.id)}
+              >
+                <Box padding={1}>
+                  <Flex justify="space-between" gap={2}>
+                    <Text weight="semibold">
+                      {project.name}
+
+                      {!project.public && (
+                        <Tooltip
+                          content={
+                            <Box padding={2}>
+                              <Text muted size={1}>
+                                This project is private
+                              </Text>
+                            </Box>
+                          }
+                          fallbackPlacements={['right', 'left']}
+                          placement="top"
+                          portal
+                        >
+                          <LockIcon style={{marginLeft: 5}} />
+                        </Tooltip>
+                      )}
+                    </Text>
+                    <Text muted={true}>{project.mediaCount}</Text>
+                  </Flex>
+                </Box>
+              </MenuItem>
+            ))
+          : !loading && (
+              <Card padding={4}>
+                <Text align="center" muted size={1}>
+                  No projects found.
+                </Text>
+              </Card>
+            )}
       </Menu>
     </Box>
   )

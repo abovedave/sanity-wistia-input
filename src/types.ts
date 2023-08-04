@@ -1,4 +1,4 @@
-import { ObjectInputProps } from 'sanity'
+import {ObjectInputProps} from 'sanity'
 
 export interface Config {
   token: string | ''
@@ -9,8 +9,8 @@ export interface WistiaInputProps extends ObjectInputProps {
 }
 
 export interface WistiaMedia {
-  id?: number,
-  hashed_id?: string,
+  id?: number
+  hashed_id?: string
 }
 
 export interface AssetMediaActions {
@@ -18,25 +18,25 @@ export interface AssetMediaActions {
 }
 
 export interface WistaAPIProject {
-  id: number,
-  name: string | '',
-  mediaCount: number | 0,
-  created: string,
-  updated: string,
-  hashedId: string,
-  public: boolean | true,
-  publicId: string,
-  description: string | '',
+  id: number
+  name: string | ''
+  mediaCount: number | 0
+  created: string
+  updated: string
+  hashedId: string
+  public: boolean | true
+  publicId: string
+  description: string | ''
 }
 
 export interface WistiaAPIMedias {
-  id: number,
-  name: string | '',
-  duration: number | 0,
-  created: string,
-  updated: string,
-  hashed_id: string,
-  description: string | '',
+  id: number
+  name: string | ''
+  duration: number | 0
+  created: string
+  updated: string
+  hashed_id: string
+  description: string | ''
   thumbnail: WistiaAPIMediaThumbnail
 }
 
@@ -45,7 +45,7 @@ export interface WistaMediasGrouped {
 }
 
 export interface WistiaAPIMediaThumbnail {
-  url: string,
-  width: number,
-  height: number,
+  url: string
+  width: number
+  height: number
 }
