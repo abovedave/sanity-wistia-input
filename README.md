@@ -32,6 +32,22 @@ export default defineConfig({
 })
 ```
 
+Then use `wistiaMedia` as your field type:
+
+```javascript
+export default {
+  name: 'video',
+  title: 'Videos',
+  type: 'document',
+  fields: [
+    {
+      name: 'video',
+      type: 'wistiaMedia',
+    },
+  ],
+})
+```
+
 ## Data model
 
 ```js
