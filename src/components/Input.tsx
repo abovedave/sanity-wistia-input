@@ -1,7 +1,7 @@
 import {useState, useCallback} from 'react'
 import {Button, Dialog, Card, Flex, Text, useToast} from '@sanity/ui'
 import {DocumentVideoIcon, ChevronLeftIcon, PlayIcon} from '@sanity/icons'
-import {set, unset} from 'sanity'
+import {set, unset, setIfMissing} from 'sanity'
 
 import {AssetMediaActions, WistiaMedia, WistiaInputProps} from '../types'
 
@@ -16,13 +16,20 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedProjectId, setSelectedProjectId] = useState(0)
-
+  
   const handleChange = useCallback(
     (newValue: WistiaMedia) => {
       setIsModalOpen(false)
-      onChange(newValue ? set(newValue) : unset())
+
+      onChange([
+        setIfMissing({
+          _type: schemaType.name,
+        }),
+        set(newValue.hashed_id, ['hashed_id']),
+        set(newValue.id, ['id']),
+      ])
     },
-    [onChange],
+    [onChange, schemaType],
   )
 
   const handleProjectClick = (projectId: number) => {
