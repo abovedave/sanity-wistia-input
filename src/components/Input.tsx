@@ -12,7 +12,12 @@ import {Player} from './Player'
 import {AssetMenu} from './AssetMenu'
 
 const WistiaInputComponent = (props: WistiaInputProps) => {
-  const {value, onChange, config} = props
+  const {
+    value,
+    onChange,
+    config,
+    schemaType,
+  } = props
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedProjectId, setSelectedProjectId] = useState(0)
