@@ -15,17 +15,14 @@
   "author": "David Longworth <djl.fyi@sent.com>",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
       "source": "./src/index.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.esm.js",
-      "default": "./dist/index.esm.js"
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
-  "source": "./src/index.ts",
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
@@ -43,32 +40,32 @@
     "watch": "pkg-utils watch --strict"
   },
   "dependencies": {
-    "@sanity/icons": "^2.4.1",
+    "@sanity/icons": "^2.11.8",
     "@sanity/incompatible-plugin": "^1.0.4",
-    "@sanity/ui": "^1.7.4",
-    "styled-components": "^5.3.11"
+    "@sanity/ui": "^2.1.4",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
-    "@sanity/pkg-utils": "^2.3.3",
-    "@sanity/plugin-kit": "^3.1.7",
-    "@types/react": "^18.2.14",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.44.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-config-sanity": "^6.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-react": "^7.32.2",
+    "@sanity/pkg-utils": "^6.7.0",
+    "@sanity/plugin-kit": "^4.0.4",
+    "@types/react": "^18.2.79",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-sanity": "^7.1.2",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.0.0",
-    "prettier-plugin-packagejson": "^2.4.5",
+    "prettier": "^3.2.5",
+    "prettier-plugin-packagejson": "^2.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
-    "rimraf": "^5.0.1",
-    "sanity": "^3.14.1",
-    "typescript": "^5.1.6"
+    "rimraf": "^5.0.5",
+    "sanity": "^3.38.0",
+    "typescript": "^5.4.5"
   },
   "peerDependencies": {
     "react": "^18",
