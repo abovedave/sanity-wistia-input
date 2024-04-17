@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-wistia-input",
-  "version": "2.0.1",
+  "version": "2.0.0",
   "description": "Wistia input for Sanity v3",
   "repository": {
     "type": "git",
@@ -13,6 +13,8 @@
   ],
   "license": "MIT",
   "author": "David Longworth <djl.fyi@sent.com>",
+  "browserslist": "extends @sanity/browserslist-config",
+  "sideEffects": false,
   "exports": {
     ".": {
       "source": "./src/index.ts",
@@ -31,12 +33,12 @@
     "v2-incompatible.js"
   ],
   "scripts": {
-    "build": "run-s clean && plugin-kit verify-package --silent && pkg-utils build --strict && pkg-utils --strict",
+    "build": "plugin-kit verify-package --silent && pkg-utils build --strict --check --clean",
     "clean": "rimraf dist",
     "format": "prettier --write --cache --ignore-unknown .",
     "link-watch": "plugin-kit link-watch",
     "lint": "eslint .",
-    "prepublishOnly": "run-s build",
+    "prepublishOnly": "npm run build",
     "watch": "pkg-utils watch --strict"
   },
   "dependencies": {
@@ -72,6 +74,6 @@
     "sanity": "^3"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   }
 }
