@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-wistia-input",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "Wistia input for Sanity v3",
   "repository": {
     "type": "git",
