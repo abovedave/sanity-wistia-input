@@ -11,6 +11,7 @@ export interface WistiaInputProps extends ObjectInputProps {
 export interface WistiaMedia {
   id?: number
   hashed_id?: string
+  thumbnail?: string
 }
 
 export interface AssetMediaActions {
@@ -29,6 +30,12 @@ export interface WistaAPIProject {
   description: string | ''
 }
 
+export interface WistiaAPIMediaThumbnail {
+  url: string
+  width: number
+  height: number
+}
+
 export interface WistiaAPIMedias {
   id: number
   name: string | ''
@@ -42,10 +49,4 @@ export interface WistiaAPIMedias {
 
 export interface WistaMediasGrouped {
   [key: string]: WistiaAPIMedias[]
-}
-
-export interface WistiaAPIMediaThumbnail {
-  url: string
-  width: number
-  height: number
 }

@@ -1,6 +1,7 @@
+import {Box, Card, Flex, Heading, Menu, MenuItem, Spinner, Text} from '@sanity/ui'
 import {useEffect, useState} from 'react'
-import {Spinner, Card, Flex, Text, Box, Menu, MenuItem, Heading} from '@sanity/ui'
-import {WistiaMedia, WistiaAPIMedias, WistaMediasGrouped, Config} from '../types'
+
+import {Config, WistaMediasGrouped, WistiaAPIMedias, WistiaMedia} from '../types'
 
 const groupBy = (array: Array<WistiaAPIMedias>, key: string) => {
   return array.reduce((rv: any, x: any) => {
@@ -42,7 +43,7 @@ const wistiaMediasComponent = ({
         .then((response) => response.json())
         .then((data) => {
           setLoading(false)
-          let grouped = groupBy(data, 'section')
+          const grouped = groupBy(data, 'section')
           return setwistiaMedias(grouped)
         })
         .catch((error) => console.error(error))
@@ -81,14 +82,20 @@ const wistiaMediasComponent = ({
                     paddingY={2}
                     key={media.id}
                     style={{cursor: 'pointer'}}
-                    onClick={() => handleVideoClick({id: media.id, hashed_id: media.hashed_id})}
+                    onClick={() =>
+                      handleVideoClick({
+                        id: media.id,
+                        hashed_id: media.hashed_id,
+                        thumbnail: media.thumbnail.url,
+                      })
+                    }
                   >
                     <Flex gap={3} align="center">
                       <img src={media.thumbnail.url} width="70" style={{borderRadius: 3}} />
                       <Text size={1} weight="semibold" align={'left'}>
                         {media.name}
                       </Text>
-                      <Text size={1} style={{marginLeft: 'auto'}} muted={true}>
+                      <Text size={1} style={{marginLeft: 'auto'}} muted>
                         {new Date(media.duration * 1000).toISOString().slice(11, 19)}
                       </Text>
                     </Flex>
