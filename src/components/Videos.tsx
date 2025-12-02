@@ -2,13 +2,6 @@ import {useEffect, useState} from 'react'
 import {Spinner, Card, Flex, Text, Box, Menu, MenuItem, Heading} from '@sanity/ui'
 import {WistiaMedia, WistiaAPIMedias, WistaMediasGrouped, Config} from '../types'
 
-const groupBy = (array: Array<WistiaAPIMedias>, key: string) => {
-  return array.reduce((rv: any, x: any) => {
-    ;(rv[x[key]] = rv[x[key]] || []).push(x)
-    return rv
-  }, {})
-}
-
 const wistiaMediasComponent = ({
   onVideoClick,
   projectId,
@@ -20,6 +13,13 @@ const wistiaMediasComponent = ({
 }) => {
   const [wistiaMedias, setwistiaMedias] = useState<WistaMediasGrouped>({})
   const [loading, setLoading] = useState(false)
+
+  const groupBy = (array: Array<WistiaAPIMedias>, key: string) => {
+    return array.reduce((rv: any, x: any) => {
+      ;(rv[x[key]] = rv[x[key]] || []).push(x)
+      return rv
+    }, {})
+  }
 
   const handleVideoClick = (media: WistiaMedia) => {
     onVideoClick(media)

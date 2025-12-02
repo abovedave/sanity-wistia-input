@@ -1,5 +1,5 @@
 import {Button, MenuButton, Menu, MenuItem, MenuDivider} from '@sanity/ui'
-import {EllipsisVerticalIcon, ResetIcon, ClipboardIcon, SearchIcon} from '@sanity/icons'
+import {EllipsisVerticalIcon, ResetIcon, ClipboardIcon, SearchIcon, UploadIcon} from '@sanity/icons'
 
 import {AssetMediaActions} from '../types'
 
@@ -11,10 +11,17 @@ export function AssetMenu({onAction}: {onAction: (action: AssetMediaActions) => 
       menu={
         <Menu>
           <MenuItem
-            text="Replace media"
+            text="Replace medias"
             icon={SearchIcon}
             onClick={() => {
               onAction({type: 'select'})
+            }}
+          />
+          <MenuItem
+            text="Upload new video"
+            icon={UploadIcon}
+            onClick={() => {
+              onAction({type: 'upload'})
             }}
           />
           <MenuItem

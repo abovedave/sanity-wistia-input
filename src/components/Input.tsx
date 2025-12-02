@@ -1,12 +1,13 @@
 import {useState, useCallback} from 'react'
 import {Button, Dialog, Card, Flex, Text, useToast} from '@sanity/ui'
-import {DocumentVideoIcon, ChevronLeftIcon, PlayIcon} from '@sanity/icons'
+import {DocumentVideoIcon, ChevronLeftIcon, PlayIcon, UploadIcon} from '@sanity/icons'
 import {set, unset, setIfMissing} from 'sanity'
 
 import {AssetMediaActions, WistiaMedia, WistiaInputProps} from '../types'
 
 import Projects from './Projects'
 import Videos from './Videos'
+import Upload from './Upload'
 
 import {Player} from './Player'
 import {AssetMenu} from './AssetMenu'
@@ -21,6 +22,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedProjectId, setSelectedProjectId] = useState(0)
+  const [isUploadMode, setIsUploadMode] = useState(false)
   
   const handleChange = useCallback(
     (newValue: WistiaMedia) => {
@@ -50,6 +52,11 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
         handleChange({})
         break
       case 'select':
+        setIsUploadMode(false)
+        setIsModalOpen(true)
+        break
+      case 'upload':
+        setIsUploadMode(true)
         setIsModalOpen(true)
         break
     }
@@ -68,6 +75,16 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
+  }
+
+  const openBrowseModal = () => {
+    setIsUploadMode(false)
+    setIsModalOpen(true)
+  }
+
+  const openUploadModal = () => {
+    setIsUploadMode(true)
+    setIsModalOpen(true)
   }
 
   if (!config?.token?.length) {
@@ -108,19 +125,24 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
               Select a media from Wistia
             </Text>
 
-            <Button mode="ghost" text="Select media" onClick={toggleModal} />
+            <Flex gap={2}>
+              <Button mode="ghost" text="Select media" onClick={openBrowseModal} />
+              <Button mode="ghost" text="Upload media" icon={UploadIcon} onClick={openUploadModal} />
+            </Flex>
           </Flex>
         </Card>
       )}
 
       {isModalOpen && (
         <Dialog
-          header={selectedProjectId ? 'Select media' : 'Select project'}
+          header={isUploadMode ? 'Upload video' : selectedProjectId ? 'Select media' : 'Select project'}
           id="wistia-projects"
           onClose={toggleModal}
           width={1}
         >
-          {!selectedProjectId ? (
+          {isUploadMode ? (
+            <Upload config={config} onUploadComplete={handleChange} onCancel={toggleModal} />
+          ) : !selectedProjectId ? (
             <Projects config={config} onProjectClick={handleProjectClick} />
           ) : (
             <div>

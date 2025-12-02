@@ -18,19 +18,18 @@
   "exports": {
     ".": {
       "source": "./src/index.ts",
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "commonjs",
+  "type": "module",
   "files": [
     "dist",
     "sanity.json",
-    "src",
-    "v2-incompatible.js"
+    "src"
   ],
   "scripts": {
     "build": "plugin-kit verify-package --silent && pkg-utils build --strict --check --clean",

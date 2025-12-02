@@ -14,7 +14,7 @@ export interface WistiaMedia {
 }
 
 export interface AssetMediaActions {
-  type: 'copyUrl' | 'delete' | 'select'
+  type: 'copyUrl' | 'delete' | 'select' | 'upload'
 }
 
 export interface WistaAPIProject {
