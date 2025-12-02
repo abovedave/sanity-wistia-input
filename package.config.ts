@@ -4,7 +4,7 @@ export default defineConfig({
   dist: 'dist',
   tsconfig: 'tsconfig.dist.json',
 
-  // Remove this block to enable strict export validation
+  // Disable strict export validation
   extract: {
     rules: {
       'ae-incompatible-release-tags': 'off',
