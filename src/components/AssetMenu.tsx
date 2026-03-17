@@ -1,12 +1,12 @@
 import {Button, MenuButton, Menu, MenuItem, MenuDivider} from '@sanity/ui'
-import {EllipsisVerticalIcon, ResetIcon, ClipboardIcon, SearchIcon} from '@sanity/icons'
+import {EllipsisHorizontalIcon, ResetIcon, ClipboardIcon, SearchIcon} from '@sanity/icons'
 
 import {AssetMediaActions} from '../types'
 
 export function AssetMenu({onAction}: {onAction: (action: AssetMediaActions) => void}) {
   return (
     <MenuButton
-      button={<Button padding={2} mode="ghost" icon={EllipsisVerticalIcon} tone="default" />}
+      button={<Button padding={2} mode="ghost" icon={EllipsisHorizontalIcon} tone="default" />}
       id="asset-menu"
       menu={
         <Menu>
