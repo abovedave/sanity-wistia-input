@@ -5,6 +5,8 @@ import {LaunchIcon} from '@sanity/icons'
 
 import {WistiaMedia, WistiaAPIMedias, WistaMediasGrouped, Config} from '../types'
 
+const resultsPerPage = 100
+
 const groupBy = (array: Array<WistiaAPIMedias>, key: string) => {
   return array.reduce((rv: any, x: any) => {
     ;(rv[x[key]] = rv[x[key]] || []).push(x)
@@ -23,31 +25,56 @@ const wistiaMediasComponent = ({
 }) => {
   const [wistiaMedias, setwistiaMedias] = useState<WistaMediasGrouped>({})
   const [loading, setLoading] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
   const [hoveredId, setHoveredId] = useState<number | null>(null)
 
   const handleVideoClick = (media: WistiaMedia) => {
     onVideoClick(media)
   }
 
-  useEffect(() => {
-    if (!projectId) return
-    setLoading(true)
+  const fetchMedias = (pageNum: number, append: boolean) => {
+    if (append) setLoadingMore(true)
+    else setLoading(true)
 
-    fetch(`https://api.wistia.com/v1/medias.json?project_id=${projectId}&sort_by=name`, {
+    fetch(`https://api.wistia.com/v1/medias.json?project_id=${projectId}&sort_by=name&page=${pageNum}&per_page=${resultsPerPage}`, {
       headers: {Authorization: `Bearer ${config.token}`},
     })
       .then((r) => r.json())
       .then((data) => {
-        setwistiaMedias(groupBy(data, 'section'))
-        setLoading(false)
+        setHasMore(data.length === resultsPerPage)
+        setwistiaMedias((prev) => {
+          const next = groupBy(data, 'section')
+          if (!append) return next
+          const merged = {...prev}
+          Object.keys(next).forEach((section) => {
+            merged[section] = [...(merged[section] || []), ...next[section]]
+          })
+          return merged
+        })
+        if (append) setLoadingMore(false)
+        else setLoading(false)
       })
       .catch(console.error)
+  }
+
+  useEffect(() => {
+    if (!projectId) return
+    setPage(1)
+    fetchMedias(1, false)
   }, [projectId, config.token])
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1
+    setPage(nextPage)
+    fetchMedias(nextPage, true)
+  }
 
   return (
     <div>
       {loading && (
-        <Card padding={4}>
+        <Card padding={7}>
           <Flex align="center" direction="column" gap={3} justify="center">
             <Spinner muted />
             <Text muted size={1}>Loading media from Wistia…</Text>
@@ -109,6 +136,17 @@ const wistiaMediasComponent = ({
               <Text align="center" muted size={1}>No media found.</Text>
             </Card>
           )}
+      {hasMore && (
+        <Card padding={3} borderTop>
+          <Button
+            mode="bleed"
+            text={loadingMore ? 'Loading…' : 'Show more'}
+            onClick={handleLoadMore}
+            disabled={loadingMore}
+            width="fill"
+          />
+        </Card>
+      )}
     </div>
   )
 }

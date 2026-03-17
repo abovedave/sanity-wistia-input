@@ -1,4 +1,4 @@
-const playerUrl = (videoUrl: string) => {
+const playerUrl = (mediaUrl: string) => {
   let params = new URLSearchParams()
 
   // https://wistia.com/support/developers/embed-options#options
@@ -19,10 +19,10 @@ const playerUrl = (videoUrl: string) => {
     params.append(key, wistiaSettings[key])
   }
 
-  return `${videoUrl}?${params.toString()}`
+  return `${mediaUrl}?${params.toString()}`
 }
 
-export function Player({videoUrl}: {videoUrl: string}) {
+export function Player({mediaUrl}: {mediaUrl: string}) {
   return (
     <div
       style={{
@@ -45,7 +45,7 @@ export function Player({videoUrl}: {videoUrl: string}) {
           display: 'block',
           borderRadius: '3px',
         }}
-        src={playerUrl(videoUrl) || ''}
+        src={playerUrl(mediaUrl) || ''}
       />
     </div>
   )

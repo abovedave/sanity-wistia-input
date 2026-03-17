@@ -10,7 +10,6 @@ import Medias from './Medias'
 
 const WistiaInputComponent = (props: WistiaInputProps) => {
   const {value, onChange, config, schemaType, path, renderDefault} = props
-  const isInsideBlock = path.some((segment) => typeof segment === 'object')
   const {push: pushToast} = useToast()
 
   const [isPickerOpen, setIsPickerOpen] = useState(false)
@@ -43,6 +42,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     setSelectedProject(null)
   }, [])
 
+  // MARK: Config error
   if (!config?.token?.length) {
     return (
       <Card padding={[3, 3, 4]} radius={2} shadow={1} tone="critical">
@@ -56,10 +56,11 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     )
   }
 
-  const videoUrl = value?.hashed_id
+  const mediaUrl = value?.hashed_id
     ? `https://fast.wistia.net/embed/iframe/${value.hashed_id}`
     : null
 
+  // MARK: Selecting a Folder and Media
   const picker = isPickerOpen && (
     <Dialog
       id="wistia-picker"
@@ -67,27 +68,30 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
       width={1}
       header={
         selectedProject ? (
-          <Flex justify="space-between" align="center" flex={1}>
-            <Button
-              icon={ChevronLeftIcon}
-              onClick={() => setSelectedProject(null)}
-              mode="ghost"
-              text="Back to folders"
-            />
+          <Stack space={2}>
+            <Box>
+              <Button
+                icon={ChevronLeftIcon}
+                onClick={() => setSelectedProject(null)}
+                mode="bleed"
+                padding={2}
+                text="All folders"
+              />
+            </Box>
             <Flex justify="space-between" align="center" flex={1}>
-              <Box>
+              <Stack space={2}>
                 <Flex gap={3}>
-                  <Text size={1} weight="semibold">{selectedProject.name}</Text>
+                  <Text size={2} weight="semibold">{selectedProject.name}</Text>
                 </Flex>
                 {selectedProject.description ? (
                   <Text size={1} muted>
                     <span dangerouslySetInnerHTML={{ __html: selectedProject.description }}></span>
                   </Text>
                 ) : null}
-              </Box>
+              </Stack>
               {!selectedProject.public && <Badge tone="caution" size={1}>Private</Badge>}
             </Flex>
-          </Flex>
+          </Stack>
         ) : 'Select a folder'
       }
       footer={
@@ -120,37 +124,37 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     </Dialog>
   )
 
+  // Add in any extra fields the user has defined
   const extraFields = <Stack marginTop={4}>{renderDefault(props)}</Stack>
 
-  if (videoUrl) {
+  // MARK: Media is selected
+  if (mediaUrl) {
     return (
       <Stack space={0}>
         <Card radius={2} shadow={1} padding={2}>
-          <Flex justify="space-between" align="center" padding={0} gap={1}>
-            <Flex padding={0} gap={1}>
-               <Button
-                as="a"
-                href={`https://${config.accountSubdomain || 'app'}.wistia.com/medias/${value?.hashed_id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                icon={LaunchIcon}
-                mode="bleed"
-                text="Open in Wistia"
-              />
+          <Flex justify="space-between" align="center" padding={0} paddingBottom={2} gap={1}>
+            <Flex gap={1}>
+              <Tooltip content={<Text size={1}>Open in Wistia</Text>} placement="top" portal>
+                  <Button
+                    as="a"
+                    href={`https://${config.accountSubdomain || 'app'}.wistia.com/medias/${value?.hashed_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    icon={LaunchIcon}
+                    mode="bleed"
+                    padding={2}
+                  />
+              </Tooltip>
               <Tooltip content={<Text size={1}>Copy embed URL</Text>} placement="top" portal>
-                <Button mode="bleed" icon={ClipboardIcon} onClick={handleCopyUrl} />
+                <Button mode="bleed" padding={2} icon={ClipboardIcon} onClick={handleCopyUrl} />
               </Tooltip>
             </Flex>
-            <Flex padding={0} gap={1}>
-              <Tooltip content={<Text size={1}>Replace media</Text>} placement="top" portal>
-                <Button mode="bleed" icon={SearchIcon} onClick={() => setIsPickerOpen(true)} />
-              </Tooltip>
-              <Tooltip content={<Text size={1}>Clear field</Text>} placement="top" portal>
-                <Button mode="bleed" icon={ResetIcon} tone="critical" onClick={handleClear} />
-              </Tooltip>
+            <Flex align="center" gap={1}>
+              <Button text="Replace" padding={2} mode="bleed" icon={SearchIcon} onClick={() => setIsPickerOpen(true)} />
+              <Button text="Clear" padding={2} mode="bleed" icon={ResetIcon} tone="critical" onClick={handleClear} />
             </Flex>
           </Flex>
-          <Player videoUrl={videoUrl} />
+          <Player mediaUrl={mediaUrl} />
         </Card>
         {picker}
         {extraFields}
@@ -158,34 +162,37 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     )
   }
 
+  // MARK: Initial state, no media selected
   return (
-    <Card tone={'inherit'} border padding={[3, 5]} style={{borderStyle: 'dashed'}}>
-      <Flex align={'center'} direction={'column'} gap={4}>
-        <Text muted>
-          <DocumentVideoIcon />
-        </Text>
-        <Text size={1} muted>No media selected</Text>
-        <Flex align={'center'} direction={'column'} gap={2}>
-          <Button
-            tone="primary"
-            text="Select media"
-            onClick={() => setIsPickerOpen(true)}
-          />
-          <Button
-            as="a"
-            href={`https://${config.accountSubdomain || 'app'}.wistia.com/home`}
-            target="_blank"
-            rel="noopener noreferrer"
-            iconRight={LaunchIcon}
-            mode="bleed"
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-            text={`${config.accountSubdomain || 'app'}.wistia.com`}
-          />
+    <Stack space={2}>
+      <Card tone={'inherit'} border padding={[3, 5]} style={{borderStyle: 'dashed'}}>
+        <Flex align={'center'} direction={'column'} gap={4}>
+          <Text muted>
+            <DocumentVideoIcon />
+          </Text>
+          <Text size={1} muted>No media selected</Text>
+          <Flex align={'center'} direction={'column'} gap={2}>
+            <Button
+              tone="primary"
+              text="Select media"
+              onClick={() => setIsPickerOpen(true)}
+            />
+            <Button
+              as="a"
+              href={`https://${config.accountSubdomain || 'app'}.wistia.com/home`}
+              target="_blank"
+              rel="noopener noreferrer"
+              iconRight={LaunchIcon}
+              mode="bleed"
+              onClick={(e: React.MouseEvent) => e.stopPropagation()}
+              text={"Open Wistia dashboard"}
+            />
+          </Flex>
         </Flex>
-        {picker}
-      </Flex>
+      </Card>
+      {picker}
       {extraFields}
-    </Card>
+    </Stack>
   )
 }
 

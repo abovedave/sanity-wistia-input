@@ -4,6 +4,8 @@ import {LockIcon, LaunchIcon} from '@sanity/icons'
 
 import {Config, WistaAPIProject} from '../types'
 
+const resultsPerPage = 100
+
 const WistiaProjectsComponent = ({
   onProjectClick,
   config,
@@ -13,6 +15,9 @@ const WistiaProjectsComponent = ({
 }) => {
   const [wistiaProjects, setWistiaProjects] = useState<WistaAPIProject[]>([])
   const [loading, setLoading] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
   const [error, setError] = useState('')
   const [hoveredId, setHoveredId] = useState<number | null>(null)
 
@@ -20,34 +25,39 @@ const WistiaProjectsComponent = ({
     onProjectClick(project)
   }
 
-  useEffect(() => {
-    setLoading(true)
+  const fetchProjects = (pageNum: number, append: boolean) => {
+    if (append) setLoadingMore(true)
+    else setLoading(true)
 
-    const apiUrl = 'https://api.wistia.com/v1/projects.json?sort_by=updated&sort_direction=0'
-
-    const headers = new Headers({
-      Authorization: `Bearer ${config.token}`,
-    })
-
-    fetch(apiUrl, {
+    fetch(`https://api.wistia.com/v1/projects.json?sort_by=updated&sort_direction=0&page=${pageNum}&per_page=${resultsPerPage}`, {
       method: 'GET',
-      headers: headers,
+      headers: new Headers({Authorization: `Bearer ${config.token}`}),
     })
       .then((response) => {
         if (!response.ok) {
-          if (response?.status === 401) {
-            setError('401 Not authorised - check your API key permissions.')
-          } else {
-            setError(`${response?.status} error`)
-          }
+          setError(response?.status === 401 ? '401 Not authorised - check your API key permissions.' : `${response?.status} error`)
         }
-
-        setLoading(false)
+        if (append) setLoadingMore(false)
+        else setLoading(false)
         return response.json()
       })
-      .then((data) => setWistiaProjects(data))
+      .then((data) => {
+        setHasMore(data.length === resultsPerPage)
+        setWistiaProjects((prev) => append ? [...prev, ...data] : data)
+      })
       .catch((error) => console.error(error))
+  }
+
+  useEffect(() => {
+    setPage(1)
+    fetchProjects(1, false)
   }, [])
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1
+    setPage(nextPage)
+    fetchProjects(nextPage, true)
+  }
 
   if (error) {
     return (
@@ -126,6 +136,17 @@ const WistiaProjectsComponent = ({
           </Card>
         )
       }
+      {hasMore && (
+        <Card padding={3} borderTop>
+          <Button
+            mode="bleed"
+            text={loadingMore ? 'Loading…' : 'Show more'}
+            onClick={handleLoadMore}
+            disabled={loadingMore}
+            width="fill"
+          />
+        </Card>
+      )}
     </div>
   )
 }
