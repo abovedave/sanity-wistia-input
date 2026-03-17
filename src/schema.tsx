@@ -6,20 +6,27 @@ export const wistiaMedia = {
     {
       type: 'number',
       name: 'id',
+      hidden: true,
     },
     {
       type: 'string',
       name: 'hashed_id',
+      hidden: true,
+    },
+    {
+      type: 'string',
+      name: 'name',
+      title: 'Title',
     },
   ],
   preview: {
     select: {
-      title: 'id',
+      title: 'name',
       subtitle: 'hashed_id',
     },
-    prepare({title, subtitle}: {title: number; subtitle: string}) {
+    prepare({title, subtitle}: {title: string; subtitle: string}) {
       return {
-        title: `Wistia ID: ${title}`,
+        title: title || 'Wistia video',
         subtitle,
       }
     },
