@@ -1,6 +1,6 @@
 # sanity-plugin-wistia-input
 
-> This is a **Sanity Studio v3** plugin.
+> This is a **Sanity Studio v5** plugin.
 
 ## What is it?
 
