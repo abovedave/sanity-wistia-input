@@ -62,10 +62,10 @@ const WistiaProjectsComponent = ({
   return (
     <div>
       {loading && (
-        <Card padding={4}>
+        <Card padding={7}>
           <Flex align="center" direction="column" gap={3} justify="center">
             <Spinner muted />
-            <Text muted size={1}>Loading projects from Wistia…</Text>
+            <Text muted size={1}>Loading folders from Wistia…</Text>
           </Flex>
         </Card>
       )}
@@ -91,7 +91,7 @@ const WistiaProjectsComponent = ({
                   <Tooltip
                     content={
                       <Box padding={2}>
-                        <Text muted size={1}>This project is private</Text>
+                        <Text muted size={1}>Private folder</Text>
                       </Box>
                     }
                     fallbackPlacements={['right', 'left']}
