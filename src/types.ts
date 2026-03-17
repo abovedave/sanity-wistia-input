@@ -1,7 +1,9 @@
-import {ObjectInputProps} from 'sanity'
+import {ObjectInputProps, ObjectFieldType} from 'sanity'
 
 export interface Config {
   token: string | ''
+  accountSubdomain?: string
+  fields?: ObjectFieldType[]
 }
 
 export interface WistiaInputProps extends ObjectInputProps {

@@ -15,11 +15,13 @@ export const wistiaMedia = {
   preview: {
     select: {
       title: 'id',
+      subtitle: 'hashed_id',
     },
-     prepare({ title }: { title: String }) {
+    prepare({title, subtitle}: {title: number; subtitle: string}) {
       return {
-        title: `Wistia video ID: ${title}`
+        title: `Wistia ID: ${title}`,
+        subtitle,
       }
-    }
+    },
   }
 }
