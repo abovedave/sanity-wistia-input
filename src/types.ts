@@ -15,10 +15,6 @@ export interface WistiaMedia {
   hashed_id?: string
 }
 
-export interface AssetMediaActions {
-  type: 'copyUrl' | 'delete' | 'select'
-}
-
 export interface WistaAPIProject {
   id: number
   name: string | ''

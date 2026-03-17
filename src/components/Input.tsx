@@ -1,16 +1,15 @@
 import {useState, useCallback} from 'react'
-import {Button, Card, Dialog, Flex, Text, Badge, Box, useToast} from '@sanity/ui'
-import {DocumentVideoIcon, ChevronLeftIcon, LaunchIcon} from '@sanity/icons'
+import {Button, Card, Dialog, Flex, Text, Badge, Box, Stack, Tooltip, useToast} from '@sanity/ui'
+import {DocumentVideoIcon, ChevronLeftIcon, LaunchIcon, ResetIcon, ClipboardIcon, SearchIcon} from '@sanity/icons'
 import {set, unset, setIfMissing} from 'sanity'
 
-import {AssetMediaActions, WistiaMedia, WistiaInputProps, WistaAPIProject} from '../types'
+import {WistiaMedia, WistiaInputProps, WistaAPIProject} from '../types'
 import {Player} from './Player'
-import {AssetMenu} from './AssetMenu'
 import Folder from './Folder'
 import Medias from './Medias'
 
 const WistiaInputComponent = (props: WistiaInputProps) => {
-  const {value, onChange, config, schemaType, path} = props
+  const {value, onChange, config, schemaType, path, renderDefault} = props
   const isInsideBlock = path.some((segment) => typeof segment === 'object')
   const {push: pushToast} = useToast()
 
@@ -34,20 +33,10 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     onChange(unset())
   }, [onChange])
 
-  const handleAssetMenu = useCallback((action: AssetMediaActions) => {
-    switch (action.type) {
-      case 'select':
-        setIsPickerOpen(true)
-        break
-      case 'copyUrl':
-        navigator.clipboard.writeText(`https://fast.wistia.net/embed/iframe/${value?.hashed_id}`)
-        pushToast({closable: true, status: 'success', title: 'URL copied to clipboard'})
-        break
-      case 'delete':
-        handleClear()
-        break
-    }
-  }, [value, handleClear, pushToast])
+  const handleCopyUrl = useCallback(() => {
+    navigator.clipboard.writeText(`https://fast.wistia.net/embed/iframe/${value?.hashed_id}`)
+    pushToast({closable: true, status: 'success', title: 'URL copied to clipboard'})
+  }, [value, pushToast])
 
   const handleClosePicker = useCallback(() => {
     setIsPickerOpen(false)
@@ -131,15 +120,41 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     </Dialog>
   )
 
+  const extraFields = <Stack marginTop={4}>{renderDefault(props)}</Stack>
+
   if (videoUrl) {
     return (
-      <Card radius={2} shadow={1} padding={2}>
-        <Flex justify="flex-end" marginBottom={2}>
-          <AssetMenu onAction={handleAssetMenu} />
-        </Flex>
-        <Player videoUrl={videoUrl} />
+      <Stack space={0}>
+        <Card radius={2} shadow={1} padding={2}>
+          <Flex justify="space-between" align="center" padding={0} gap={1}>
+            <Flex padding={0} gap={1}>
+               <Button
+                as="a"
+                href={`https://${config.accountSubdomain || 'app'}.wistia.com/medias/${value?.hashed_id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                icon={LaunchIcon}
+                mode="bleed"
+                text="Open in Wistia"
+              />
+              <Tooltip content={<Text size={1}>Copy embed URL</Text>} placement="top" portal>
+                <Button mode="bleed" icon={ClipboardIcon} onClick={handleCopyUrl} />
+              </Tooltip>
+            </Flex>
+            <Flex padding={0} gap={1}>
+              <Tooltip content={<Text size={1}>Replace media</Text>} placement="top" portal>
+                <Button mode="bleed" icon={SearchIcon} onClick={() => setIsPickerOpen(true)} />
+              </Tooltip>
+              <Tooltip content={<Text size={1}>Clear field</Text>} placement="top" portal>
+                <Button mode="bleed" icon={ResetIcon} tone="critical" onClick={handleClear} />
+              </Tooltip>
+            </Flex>
+          </Flex>
+          <Player videoUrl={videoUrl} />
+        </Card>
         {picker}
-      </Card>
+        {extraFields}
+      </Stack>
     )
   }
 
@@ -169,6 +184,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
         </Flex>
         {picker}
       </Flex>
+      {extraFields}
     </Card>
   )
 }
