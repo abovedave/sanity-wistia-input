@@ -38,9 +38,12 @@ const wistiaMediasComponent = ({
     if (append) setLoadingMore(true)
     else setLoading(true)
 
-    fetch(`https://api.wistia.com/v1/medias.json?project_id=${projectId}&sort_by=name&page=${pageNum}&per_page=${resultsPerPage}`, {
-      headers: {Authorization: `Bearer ${config.token}`},
-    })
+    fetch(
+      `https://api.wistia.com/v1/medias.json?project_id=${projectId}&sort_by=name&page=${pageNum}&per_page=${resultsPerPage}`,
+      {
+        headers: {Authorization: `Bearer ${config.token}`},
+      },
+    )
       .then((r) => r.json())
       .then((data) => {
         setHasMore(data.length === resultsPerPage)
@@ -77,7 +80,9 @@ const wistiaMediasComponent = ({
         <Card padding={7}>
           <Flex align="center" direction="column" gap={3} justify="center">
             <Spinner muted />
-            <Text muted size={1}>Loading media from Wistia…</Text>
+            <Text muted size={1}>
+              Loading media from Wistia…
+            </Text>
           </Flex>
         </Card>
       )}
@@ -86,8 +91,15 @@ const wistiaMediasComponent = ({
         ? Object.keys(wistiaMedias).map((section, index) => (
             <div key={projectId + index}>
               {section !== 'undefined' && (
-                <Card padding={3} paddingLeft={4} borderBottom style={{position: 'sticky', top: 0, zIndex: 1}}>
-                  <Heading as="h2" size={1}>{section}</Heading>
+                <Card
+                  padding={3}
+                  paddingLeft={4}
+                  borderBottom
+                  style={{position: 'sticky', top: 0, zIndex: 1}}
+                >
+                  <Heading as="h2" size={1}>
+                    {section}
+                  </Heading>
                 </Card>
               )}
               {wistiaMedias[section].map((media: WistiaAPIMedias) => (
@@ -111,7 +123,9 @@ const wistiaMediasComponent = ({
                       style={{borderRadius: 3, display: 'block'}}
                       alt={media.name}
                     />
-                    <Text size={1} weight="semibold">{media.name}</Text>
+                    <Text size={1} weight="semibold">
+                      {media.name}
+                    </Text>
                     <Text size={1} style={{marginLeft: 'auto'}} muted>
                       {new Date(media.duration * 1000).toISOString().slice(11, 19)}
                     </Text>
@@ -133,7 +147,9 @@ const wistiaMediasComponent = ({
           ))
         : !loading && (
             <Card padding={4}>
-              <Text align="center" muted size={1}>No media found.</Text>
+              <Text align="center" muted size={1}>
+                No media found.
+              </Text>
             </Card>
           )}
       {hasMore && (

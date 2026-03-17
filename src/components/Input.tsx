@@ -1,6 +1,13 @@
 import {useState, useCallback} from 'react'
 import {Button, Card, Dialog, Flex, Text, Badge, Box, Stack, Tooltip, useToast} from '@sanity/ui'
-import {DocumentVideoIcon, ChevronLeftIcon, LaunchIcon, ResetIcon, ClipboardIcon, SearchIcon} from '@sanity/icons'
+import {
+  DocumentVideoIcon,
+  ChevronLeftIcon,
+  LaunchIcon,
+  ResetIcon,
+  ClipboardIcon,
+  SearchIcon,
+} from '@sanity/icons'
 import {set, unset, setIfMissing} from 'sanity'
 
 import {WistiaMedia, WistiaInputProps, WistaAPIProject} from '../types'
@@ -81,26 +88,43 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
             <Flex justify="space-between" align="center" flex={1}>
               <Stack space={2}>
                 <Flex gap={3}>
-                  <Text size={2} weight="semibold">{selectedProject.name}</Text>
+                  <Text size={2} weight="semibold">
+                    {selectedProject.name}
+                  </Text>
                 </Flex>
                 {selectedProject.description ? (
                   <Text size={1} muted>
-                    <span dangerouslySetInnerHTML={{ __html: selectedProject.description }}></span>
+                    <span dangerouslySetInnerHTML={{__html: selectedProject.description}}></span>
                   </Text>
                 ) : null}
               </Stack>
-              {!selectedProject.public && <Badge tone="caution" size={1}>Private</Badge>}
+              {!selectedProject.public && (
+                <Badge tone="caution" size={1}>
+                  Private
+                </Badge>
+              )}
             </Flex>
           </Stack>
-        ) : 'Select a folder'
+        ) : (
+          'Select a folder'
+        )
       }
       footer={
         selectedProject ? (
           <Card tone="transparent" padding={2} paddingLeft={3}>
             <Flex justify="space-between" align="center" flex={1}>
               <Flex align="center" flex={1} gap={3}>
-                <Badge tone="default" size={1}>{selectedProject.mediaCount}</Badge>
-                <Text size={1}><b>Last updated:</b> {new Date(selectedProject.updated).toLocaleDateString(undefined, {day: 'numeric', month: 'short', year: 'numeric'})}</Text>
+                <Badge tone="default" size={1}>
+                  {selectedProject.mediaCount}
+                </Badge>
+                <Text size={1}>
+                  <b>Last updated:</b>{' '}
+                  {new Date(selectedProject.updated).toLocaleDateString(undefined, {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                </Text>
               </Flex>
               <Button
                 as="a"
@@ -135,23 +159,36 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
           <Flex justify="space-between" align="center" padding={0} paddingBottom={2} gap={1}>
             <Flex gap={1}>
               <Tooltip content={<Text size={1}>Open in Wistia</Text>} placement="top" portal>
-                  <Button
-                    as="a"
-                    href={`https://${config.accountSubdomain || 'app'}.wistia.com/medias/${value?.hashed_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    icon={LaunchIcon}
-                    mode="bleed"
-                    padding={2}
-                  />
+                <Button
+                  as="a"
+                  href={`https://${config.accountSubdomain || 'app'}.wistia.com/medias/${value?.hashed_id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  icon={LaunchIcon}
+                  mode="bleed"
+                  padding={2}
+                />
               </Tooltip>
               <Tooltip content={<Text size={1}>Copy embed URL</Text>} placement="top" portal>
                 <Button mode="bleed" padding={2} icon={ClipboardIcon} onClick={handleCopyUrl} />
               </Tooltip>
             </Flex>
             <Flex align="center" gap={1}>
-              <Button text="Replace" padding={2} mode="bleed" icon={SearchIcon} onClick={() => setIsPickerOpen(true)} />
-              <Button text="Clear" padding={2} mode="bleed" icon={ResetIcon} tone="critical" onClick={handleClear} />
+              <Button
+                text="Replace"
+                padding={2}
+                mode="bleed"
+                icon={SearchIcon}
+                onClick={() => setIsPickerOpen(true)}
+              />
+              <Button
+                text="Clear"
+                padding={2}
+                mode="bleed"
+                icon={ResetIcon}
+                tone="critical"
+                onClick={handleClear}
+              />
             </Flex>
           </Flex>
           <Player mediaUrl={mediaUrl} />
@@ -170,13 +207,11 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
           <Text muted>
             <DocumentVideoIcon />
           </Text>
-          <Text size={1} muted>No media selected</Text>
+          <Text size={1} muted>
+            No media selected
+          </Text>
           <Flex align={'center'} direction={'column'} gap={2}>
-            <Button
-              tone="primary"
-              text="Select media"
-              onClick={() => setIsPickerOpen(true)}
-            />
+            <Button tone="primary" text="Select media" onClick={() => setIsPickerOpen(true)} />
             <Button
               as="a"
               href={`https://${config.accountSubdomain || 'app'}.wistia.com/home`}
@@ -185,7 +220,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
               iconRight={LaunchIcon}
               mode="bleed"
               onClick={(e: React.MouseEvent) => e.stopPropagation()}
-              text={"Open Wistia dashboard"}
+              text={'Open Wistia dashboard'}
             />
           </Flex>
         </Flex>

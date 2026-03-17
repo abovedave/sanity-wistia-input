@@ -9,7 +9,13 @@ const compat = new FlatCompat({
 
 module.exports = [
   {
-    ignores: ['dist/**', '*.js', 'commitlint.config.js', 'lint-staged.config.js', 'package.config.ts'],
+    ignores: [
+      'dist/**',
+      '*.js',
+      'commitlint.config.js',
+      'lint-staged.config.js',
+      'package.config.ts',
+    ],
   },
   ...compat.extends(
     'sanity',
@@ -17,6 +23,6 @@ module.exports = [
     'sanity/react',
     'plugin:react-hooks/recommended',
     'plugin:prettier/recommended',
-    'plugin:react/jsx-runtime'
+    'plugin:react/jsx-runtime',
   ),
 ]
