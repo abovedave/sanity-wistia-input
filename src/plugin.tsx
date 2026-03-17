@@ -8,7 +8,7 @@ export function wistiaMediaRender(config: Config) {
   return {
     components: {
       input: (props: ObjectInputProps) => <Input config={config} {...props} />,
-      preview: (props: PreviewProps) => <Preview {...props} />,
+      preview: (props: PreviewProps) => <Preview {...(props as PreviewProps & {subtitle?: string})} />,
     },
   }
 }
