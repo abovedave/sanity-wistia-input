@@ -8,7 +8,7 @@ const WistiaProjectsComponent = ({
   onProjectClick,
   config,
 }: {
-  onProjectClick: Function
+  onProjectClick: (projectId: number) => void
   config: Config
 }) => {
   const [wistiaProjects, setWistiaProjects] = useState<WistaAPIProject[]>([])

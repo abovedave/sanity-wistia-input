@@ -14,7 +14,7 @@ const wistiaMediasComponent = ({
   projectId,
   config,
 }: {
-  onVideoClick: Function
+  onVideoClick: (media: WistiaMedia) => void
   projectId: number
   config: Config
 }) => {
