@@ -1,4 +1,5 @@
 import {PreviewProps} from 'sanity'
+import {Stack} from '@sanity/ui'
 import {Player} from './Player'
 
 type WistiaPreviewProps = PreviewProps & {subtitle?: string}
@@ -6,20 +7,10 @@ type WistiaPreviewProps = PreviewProps & {subtitle?: string}
 export default (props: WistiaPreviewProps) => {
   const {subtitle: hashedId, renderDefault} = props
 
-  if (!hashedId) {
-    return (
-      <>
-        {renderDefault({...props})}
-      </>
-    )
-  }
-
-  const videoUrl = `https://fast.wistia.net/embed/iframe/${hashedId}`
-
   return (
-    <>
+    <Stack space={1}>
       {renderDefault({...props})}
-      <Player videoUrl={videoUrl} />
-    </>
+      {hashedId && <Player videoUrl={`https://fast.wistia.net/embed/iframe/${hashedId}`} />}
+    </Stack>
   )
 }
