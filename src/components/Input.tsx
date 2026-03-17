@@ -1,5 +1,5 @@
 import {useState, useCallback} from 'react'
-import {Button, Card, Dialog, Flex, Text, Badge, Box, Stack, Tooltip, useToast} from '@sanity/ui'
+import {Button, Card, Dialog, Flex, Text, Badge, Box, Stack, Tooltip, useToast, Heading} from '@sanity/ui'
 import {
   DocumentVideoIcon,
   ChevronLeftIcon,
@@ -7,6 +7,7 @@ import {
   ResetIcon,
   ClipboardIcon,
   SearchIcon,
+  FolderIcon,
 } from '@sanity/icons'
 import {set, unset, setIfMissing} from 'sanity'
 
@@ -72,10 +73,11 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     <Dialog
       id="wistia-picker"
       onClose={handleClosePicker}
+      animate
       width={1}
       header={
         selectedProject ? (
-          <Stack space={2}>
+          <Stack space={3}>
             <Box>
               <Button
                 icon={ChevronLeftIcon}
@@ -85,24 +87,17 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
                 text="All folders"
               />
             </Box>
-            <Flex justify="space-between" align="center" flex={1}>
-              <Stack space={2}>
-                <Flex gap={3}>
-                  <Text size={2} weight="semibold">
-                    {selectedProject.name}
-                  </Text>
-                </Flex>
+            <Flex justify="space-between" align="center" flex={1} paddingBottom={0}>
+              <Stack space={0}>
+                <Heading as="h2" size={2}>
+                  {selectedProject.name}
+                </Heading>
                 {selectedProject.description ? (
                   <Text size={1} muted>
                     <span dangerouslySetInnerHTML={{__html: selectedProject.description}}></span>
                   </Text>
                 ) : null}
               </Stack>
-              {!selectedProject.public && (
-                <Badge tone="caution" size={1}>
-                  Private
-                </Badge>
-              )}
             </Flex>
           </Stack>
         ) : (
@@ -115,10 +110,15 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
             <Flex justify="space-between" align="center" flex={1}>
               <Flex align="center" flex={1} gap={3}>
                 <Badge tone="default" size={1}>
-                  {selectedProject.mediaCount}
+                  {selectedProject.mediaCount} items
                 </Badge>
+                {!selectedProject.public && (
+                  <Badge tone="caution" size={1}>
+                    Private
+                  </Badge>
+                )}
                 <Text size={1}>
-                  <b>Last updated:</b>{' '}
+                  Updated{' '}
                   {new Date(selectedProject.updated).toLocaleDateString(undefined, {
                     day: 'numeric',
                     month: 'short',

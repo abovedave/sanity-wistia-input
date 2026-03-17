@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import {memo} from 'react'
-import {Spinner, Card, Flex, Text, Heading, Button} from '@sanity/ui'
+import {Spinner, Card, Flex, Text, Heading, Button, Stack, Badge, Tooltip} from '@sanity/ui'
 import {LaunchIcon} from '@sanity/icons'
 
 import {WistiaMedia, WistiaAPIMedias, WistaMediasGrouped, Config} from '../types'
@@ -75,7 +75,7 @@ const wistiaMediasComponent = ({
   }
 
   return (
-    <div>
+    <div style={{minHeight: 300}}>
       {loading && (
         <Card padding={7}>
           <Flex align="center" direction="column" gap={3} justify="center">
@@ -97,7 +97,7 @@ const wistiaMediasComponent = ({
                   borderBottom
                   style={{position: 'sticky', top: 0, zIndex: 1}}
                 >
-                  <Heading as="h2" size={1}>
+                  <Heading as="h3" size={1}>
                     {section}
                   </Heading>
                 </Card>
@@ -120,26 +120,37 @@ const wistiaMediasComponent = ({
                       src={media.thumbnail.url}
                       width={70}
                       height={Math.round(70 / (media.thumbnail.width / media.thumbnail.height))}
-                      style={{borderRadius: 3, display: 'block'}}
+                      style={{borderRadius: 3, display: 'block', border: '1px solid var(--card-bg-color)'}}
                       alt={media.name}
                     />
-                    <Text size={1} weight="semibold">
-                      {media.name}
-                    </Text>
-                    <Text size={1} style={{marginLeft: 'auto'}} muted>
+                    <Stack space={2}>
+                      <Text size={1} weight="semibold">
+                        {media.name}
+                      </Text>
+                      <Text size={0} muted>
+                        Created{' '}
+                        {new Date(media.created).toLocaleDateString(undefined, {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                        })}
+                      </Text>
+                    </Stack>
+                    <Badge size={1} style={{marginLeft: 'auto'}} muted>
                       {new Date(media.duration * 1000).toISOString().slice(11, 19)}
-                    </Text>
-                    <Button
-                      as="a"
-                      href={`https://${config.accountSubdomain || 'app'}.wistia.com/media/${media.hashed_id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      icon={LaunchIcon}
-                      mode="bleed"
-                      padding={2}
-                      onClick={(e: React.MouseEvent) => e.stopPropagation()}
-                      aria-label="Open media in Wistia dashboard"
-                    />
+                    </Badge>
+                    <Tooltip content={<Text size={1}>Open in Wistia</Text>} placement="top" fallbackPlacements={['left', 'bottom']} portal>
+                      <Button
+                        as="a"
+                        href={`https://${config.accountSubdomain || 'app'}.wistia.com/media/${media.hashed_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        icon={LaunchIcon}
+                        mode="bleed"
+                        padding={2}
+                        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                      />
+                    </Tooltip>
                   </Flex>
                 </Card>
               ))}

@@ -1,6 +1,6 @@
 import {useEffect, useState, memo} from 'react'
-import {Spinner, Card, Flex, Text, Box, Tooltip, Button, Badge} from '@sanity/ui'
-import {LockIcon, LaunchIcon} from '@sanity/icons'
+import {Spinner, Card, Flex, Text, Box, Tooltip, Button, Badge, Stack} from '@sanity/ui'
+import {LockIcon, LaunchIcon, FolderIcon} from '@sanity/icons'
 
 import {Config, WistaAPIProject} from '../types'
 
@@ -93,7 +93,9 @@ const WistiaProjectsComponent = ({
         ? wistiaProjects.map((project: WistaAPIProject) => (
             <Card
               key={project.id}
-              padding={3}
+              paddingTop={3}
+              paddingBottom={3}
+              paddingRight={3}
               paddingLeft={4}
               radius={1}
               style={{cursor: 'pointer'}}
@@ -104,40 +106,55 @@ const WistiaProjectsComponent = ({
               as="button"
             >
               <Flex justify="space-between" align="center" gap={2}>
-                <Flex align="center" gap={2}>
-                  <Text weight="semibold">{project.name}</Text>
-                  {!project.public && (
-                    <Tooltip
-                      content={
-                        <Box padding={2}>
-                          <Text muted size={1}>
-                            Private folder
-                          </Text>
-                        </Box>
-                      }
-                      fallbackPlacements={['right', 'left']}
-                      placement="top"
-                      portal
-                    >
-                      <LockIcon />
-                    </Tooltip>
-                  )}
+                <Flex align="center" gap={3}>
+                  <Stack space={2}>
+                    <Text size={1} weight="semibold">
+                      {project.name}
+                    </Text>
+                    <Text size={0} muted>
+                      Created{' '}
+                      {new Date(project.created).toLocaleDateString(undefined, {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </Text>
+                  </Stack>
                 </Flex>
                 <Flex align="center" gap={3}>
                   <Badge aria-label={`${project.mediaCount} media items`} tone="default" size={1}>
                     {project.mediaCount}
                   </Badge>
-                  <Button
-                    as="a"
-                    href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${project.hashedId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    icon={LaunchIcon}
-                    mode="bleed"
-                    padding={2}
-                    onClick={(e: React.MouseEvent) => e.stopPropagation()}
-                    aria-label="Open folder in Wistia dashboard"
-                  />
+                  {!project.public && (
+                    <Box flex="none">
+                      <Text size={2}>
+                        <Tooltip
+                          content={
+                            <Text muted size={1}>
+                              Private
+                            </Text>
+                          }
+                          fallbackPlacements={['right', 'left']}
+                          placement="top"
+                          portal
+                        >
+                          <LockIcon />
+                        </Tooltip>
+                    </Text>
+                  </Box>
+                  )}
+                  <Tooltip content={<Text size={1}>Open in Wistia</Text>} placement="top" fallbackPlacements={['left', 'bottom']} portal>
+                    <Button
+                      as="a"
+                      href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${project.hashedId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      icon={LaunchIcon}
+                      mode="bleed"
+                      padding={2}
+                      onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                    />
+                  </Tooltip>
                 </Flex>
               </Flex>
             </Card>
