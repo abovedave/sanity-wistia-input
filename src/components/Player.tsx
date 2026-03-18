@@ -36,8 +36,8 @@ export function Player({mediaUrl}: {mediaUrl: string}) {
     >
       {mediaUrl && 
         <iframe
-          allow="autoplay; fullscreen; transparency"
-          allowTransparency={true}
+          allow="autoplay; fullscreen;"
+          allow-transparency="true"
           width="100%"
           style={{
             aspectRatio: '16/9',
