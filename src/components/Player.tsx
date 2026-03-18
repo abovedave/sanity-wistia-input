@@ -30,10 +30,7 @@ export function Player({mediaUrl}: {mediaUrl: string}) {
     <div
       style={{
         width: '100%',
-        position: 'relative',
-        paddingTop: '56.25%',
-        height: '0',
-        borderRadius: '3px',
+        borderRadius: '5px',
         overflow: 'hidden',
       }}
     >
@@ -41,15 +38,10 @@ export function Player({mediaUrl}: {mediaUrl: string}) {
         <iframe
           allow="autoplay; fullscreen; transparency"
           allowTransparency={true}
+          width="100%"
           style={{
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            top: '0',
-            right: '0',
-            bottom: '0',
-            left: '0',
-            border: '0',
+            aspectRatio: '16/9',
+            border: 0,
             display: 'block',
           }}
           src={playerUrl(mediaUrl)}
