@@ -127,7 +127,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
       header={
         visibleProject ? (
           <Stack space={3}>
-            <Box>
+            <Flex justify="space-between">
               <Button
                 icon={ChevronLeftIcon}
                 onClick={() => {
@@ -136,9 +136,21 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
                 }}
                 mode="bleed"
                 padding={2}
+                space={2}
                 text="All folders"
               />
-            </Box>
+              <Button
+                as="a"
+                href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${visibleProject.hashedId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                icon={LaunchIcon}
+                mode="bleed"
+                padding={2}
+                space={2}
+                text="Open in Wistia"
+              />
+            </Flex>
             <Flex justify="space-between" align="center" flex={1} paddingBottom={0}>
               <Stack space={3}>
                 <Heading as="h2" size={2}>
@@ -158,9 +170,9 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
       }
       footer={
         visibleProject ? (
-          <Card tone="transparent" padding={2} paddingLeft={3}>
-            <Flex justify="space-between" align="center" flex={1}>
-              <Flex align="center" flex={1} gap={3}>
+          <Card tone="transparent" paddingX={4} paddingY={3}>
+            <Flex align="center" gap={3}>
+              <Flex align="center" flex={1} gap={1}>
                 <Badge tone="default">
                   {visibleProject.media_count} items
                 </Badge>
@@ -169,24 +181,27 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
                     Private
                   </Badge>
                 )}
-                <Text size={1}>
-                  Updated{' '}
-                  {new Date(visibleProject.updated).toLocaleDateString(undefined, {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric',
-                  })}
-                </Text>
               </Flex>
-              <Button
-                as="a"
-                href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${visibleProject.hashedId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                icon={LaunchIcon}
-                mode="bleed"
-                text="Open in Wistia"
-              />
+              <Text title={visibleProject.created} size={1}>
+                <b>Created</b>{' '}
+                {new Date(visibleProject.created).toLocaleDateString(undefined, {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </Text>
+              <Text title={visibleProject.updated} size={1}>
+                <b>Updated</b>{' '}
+                {new Date(visibleProject.updated).toLocaleDateString(undefined, {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </Text>
             </Flex>
           </Card>
         ) : undefined
@@ -245,6 +260,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
               <Button
                 text="Replace"
                 padding={2}
+                space={2}
                 mode="bleed"
                 icon={SearchIcon}
                 loading={isFolderLoading}
@@ -253,6 +269,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
               <Button
                 text="Clear"
                 padding={2}
+                space={2}
                 mode="bleed"
                 icon={ResetIcon}
                 tone="critical"
