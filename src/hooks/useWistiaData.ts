@@ -3,6 +3,7 @@ import {useState, useEffect, useCallback, useRef} from 'react'
 import {Config} from '../types'
 
 const RESULTS_PER_PAGE = 100
+const WISTIA_API_URL = 'https://api.wistia.com/modern'
 
 interface UseWistiaDataResult<T> {
   data: T[]
@@ -23,7 +24,6 @@ export function useWistiaData<T>(
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(false)
 
-  const wistiaAPI = 'https://api.wistia.com/modern'
   const wistiaAPIOptions = {
     headers: {
       'X-Wistia-API-Version': '2026-01',
@@ -45,7 +45,7 @@ export function useWistiaData<T>(
     }
 
     setPage(1)
-    fetch(`${wistiaAPI}${path}&page=1&per_page=${RESULTS_PER_PAGE}`, wistiaAPIOptions)
+    fetch(`${WISTIA_API_URL}${path}&page=1&per_page=${RESULTS_PER_PAGE}`, wistiaAPIOptions)
       .then((r) => {
         if (!r.ok) {
           throw new Error(
@@ -70,7 +70,7 @@ export function useWistiaData<T>(
     setPage(nextPage)
     setLoadingMore(true)
 
-    fetch(`${wistiaAPI}${path}&page=${nextPage}&per_page=${RESULTS_PER_PAGE}`, wistiaAPIOptions)
+    fetch(`${WISTIA_API_URL}${path}&page=${nextPage}&per_page=${RESULTS_PER_PAGE}`, wistiaAPIOptions)
       .then((r) => r.json())
       .then((result: T[]) => {
         setHasMore(result.length === RESULTS_PER_PAGE)
