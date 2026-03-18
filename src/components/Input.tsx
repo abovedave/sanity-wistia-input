@@ -7,8 +7,6 @@ import {
   ResetIcon,
   LinkIcon,
   SearchIcon,
-  LockIcon,
-  CalendarIcon,
 } from '@sanity/icons'
 import {set, unset, setIfMissing} from 'sanity'
 
