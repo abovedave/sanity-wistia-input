@@ -26,7 +26,7 @@ export const wistiaMedia = {
     },
     prepare({title, subtitle}: {title: string; subtitle: string}) {
       return {
-        title: title || 'Wistia video',
+        title: title || 'Wistia media',
         subtitle,
       }
     },

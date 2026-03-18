@@ -1,6 +1,6 @@
 import {memo, useState} from 'react'
 import {Spinner, Card, Flex, Text, Box, Tooltip, Button, Badge, Stack} from '@sanity/ui'
-import {LockIcon, LaunchIcon, FolderIcon} from '@sanity/icons'
+import {LockIcon, LaunchIcon, FolderIcon, CalendarIcon} from '@sanity/icons'
 
 import {Config, WistaAPIProject} from '../types'
 
@@ -86,17 +86,9 @@ const WistiaProjectsComponent = ({
                     }
                   </Box>
                   <Stack space={2}>
-                    <Text size={1} weight="semibold">
+                    <Text size={2} weight="semibold">
                       {project.name}
                     </Text>
-                    {/* <Text size={0} muted>
-                      Created{' '}
-                      {new Date(project.created).toLocaleDateString(undefined, {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
-                    </Text> */}
                   </Stack>
                 </Flex>
                 <Flex align="center" gap={3}>

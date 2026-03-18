@@ -1,6 +1,6 @@
 import {memo, useState, useMemo} from 'react'
-import {Card, Flex, Text, Heading, Button, Stack, Badge, Tooltip, Box} from '@sanity/ui'
-import {LaunchIcon} from '@sanity/icons'
+import {Card, Flex, Text, Heading, Button, Stack, Tooltip, Box} from '@sanity/ui'
+import {LaunchIcon, CalendarIcon} from '@sanity/icons'
 
 import {WistiaMedia, WistiaAPIMedias, WistaMediasGrouped, Config} from '../types'
 
@@ -73,22 +73,14 @@ const wistiaMediasComponent = ({
                       />
                     </Card>
                     <Stack space={2}>
-                      <Text title={media.name} textOverflow="ellipsis" size={1} weight="semibold">
+                      <Text title={media.name} textOverflow="ellipsis" weight="semibold">
                         {media.name}
-                      </Text>
-                      <Text size={0} muted>
-                        Created{' '}
-                        {new Date(media.created).toLocaleDateString(undefined, {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                        })}
                       </Text>
                     </Stack>
                     <Box flex="none" style={{marginLeft: 'auto'}}>
-                      <Badge muted>
+                      <Text muted>
                         {new Date(media.duration * 1000).toISOString().slice(11, 19)}
-                      </Badge>
+                      </Text>
                     </Box>
                     <Tooltip
                       content={<Text size={1}>Open in Wistia</Text>}
@@ -98,7 +90,7 @@ const wistiaMediasComponent = ({
                     >
                       <Button
                         as="a"
-                        href={`https://${config.accountSubdomain || 'app'}.wistia.com/media/${media.hashed_id}`}
+                        href={`https://${config.accountSubdomain || 'app'}.wistia.com/medias/${media.hashed_id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         icon={LaunchIcon}

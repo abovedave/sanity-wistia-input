@@ -7,6 +7,8 @@ import {
   ResetIcon,
   LinkIcon,
   SearchIcon,
+  LockIcon,
+  CalendarIcon,
 } from '@sanity/icons'
 import {set, unset, setIfMissing} from 'sanity'
 
@@ -157,7 +159,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
                   {visibleProject.name}
                 </Heading>
                 {visibleProject.description ? (
-                  <Text size={1} muted>
+                  <Text textOverflow="ellipsis" size={1} muted>
                     {visibleProject.description.replace(/<[^>]*>/g, '').trim()}
                   </Text>
                 ) : null}
@@ -170,30 +172,17 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
       }
       footer={
         visibleProject ? (
-          <Card tone="transparent" paddingX={4} paddingY={3}>
-            <Flex align="center" gap={3}>
-              <Flex align="center" flex={1} gap={1}>
-                <Badge tone="default">
-                  {visibleProject.media_count} items
+          <Card tone="transparent" paddingX={4} paddingY={4}>
+            <Flex align="center" justify="flex-start" gap={3}>
+              {!visibleProject.public && (
+                <Badge tone="caution">
+                  Private
                 </Badge>
-                {!visibleProject.public && (
-                  <Badge tone="caution">
-                    Private
-                  </Badge>
-                )}
-              </Flex>
-              <Text title={visibleProject.created} size={1}>
-                <b>Created</b>{' '}
-                {new Date(visibleProject.created).toLocaleDateString(undefined, {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
-              </Text>
+              )}
+              <Badge title={`${visibleProject.media_count} items`} tone="default">
+                {visibleProject.media_count}
+              </Badge>
               <Text title={visibleProject.updated} size={1}>
-                <b>Updated</b>{' '}
                 {new Date(visibleProject.updated).toLocaleDateString(undefined, {
                   day: 'numeric',
                   month: 'short',
