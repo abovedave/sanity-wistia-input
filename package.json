@@ -86,6 +86,9 @@
   "sanityPlugin": {
     "verifyPackage": {
       "eslintImports": false
+    },
+    "linkWatch": {
+      "extensions": "ts,tsx,js,png,svg,gif,jpeg,css"
     }
   }
 }

@@ -1,7 +1,9 @@
-import {ObjectInputProps} from 'sanity'
+import {ObjectInputProps, FieldDefinition} from 'sanity'
 
 export interface Config {
   token: string | ''
+  accountSubdomain?: string
+  fields?: FieldDefinition[]
 }
 
 export interface WistiaInputProps extends ObjectInputProps {
@@ -13,19 +15,15 @@ export interface WistiaMedia {
   hashed_id?: string
 }
 
-export interface AssetMediaActions {
-  type: 'copyUrl' | 'delete' | 'select'
-}
-
-export interface WistaAPIProject {
+export interface WistaAPIFolder {
   id: number
   name: string | ''
-  mediaCount: number | 0
+  media_count: number | 0
   created: string
   updated: string
-  hashedId: string
+  hashed_id: string
   public: boolean | true
-  publicId: string
+  public_id: string
   description: string | ''
 }
 
@@ -37,6 +35,7 @@ export interface WistiaAPIMedias {
   updated: string
   hashed_id: string
   description: string | ''
+  section?: string
   thumbnail: WistiaAPIMediaThumbnail
 }
 

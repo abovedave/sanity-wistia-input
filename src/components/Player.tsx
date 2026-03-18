@@ -1,4 +1,4 @@
-const playerUrl = (videoUrl: string) => {
+const playerUrl = (mediaUrl: string) => {
   let params = new URLSearchParams()
 
   // https://wistia.com/support/developers/embed-options#options
@@ -13,40 +13,40 @@ const playerUrl = (videoUrl: string) => {
     volumeControl: true,
     copyLinkAndThumbnailEnabled: true,
     fullscreenButton: true,
+    wmode: 'transparent',
+    videoFoam: false,
+    fitStrategy: 'fill',
   }
 
   for (let key in wistiaSettings) {
     params.append(key, wistiaSettings[key])
   }
 
-  return `${videoUrl}?${params.toString()}`
+  return `${mediaUrl}?${params.toString()}`
 }
 
-export function Player({videoUrl}: {videoUrl: string}) {
+export function Player({mediaUrl}: {mediaUrl: string}) {
   return (
     <div
       style={{
-        position: 'relative',
-        paddingTop: '56.25%',
-        height: '0',
+        width: '100%',
+        borderRadius: '3px',
+        overflow: 'hidden',
       }}
     >
-      <iframe
-        allow="autoplay; fullscreen"
-        style={{
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-          top: '0',
-          right: '0',
-          bottom: '0',
-          left: '0',
-          border: '0',
-          display: 'block',
-          borderRadius: '3px',
-        }}
-        src={playerUrl(videoUrl) || ''}
-      />
+      {mediaUrl && 
+        <iframe
+          allow="autoplay; fullscreen;"
+          allow-transparency="true"
+          width="100%"
+          style={{
+            aspectRatio: '16/9',
+            border: 0,
+            display: 'block',
+          }}
+          src={playerUrl(mediaUrl)}
+        />
+      }
     </div>
   )
 }

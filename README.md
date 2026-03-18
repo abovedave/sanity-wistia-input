@@ -27,6 +27,14 @@ export default defineConfig({
   plugins: [
     wistiaInput({
       token: '<your token here>',
+      accountSubdomain: '<your company url>', // Optional, i.e., <this bit>.wistia.com
+      fields: [
+        // Optional, extra fields to capture with your media.
+        defineField({
+          name: 'caption',
+          type: 'text',
+        }),
+      ],
     }),
   ],
 })
@@ -53,12 +61,14 @@ export default {
 ```js
 {
   id: 123456,
-  hashed_id: 'abc123'
+  hashed_id: 'abc123',
+  caption: 'abc' // or whatever your config.fields is
 }
 ```
 
 - `id` can be used to query the [Wistia Data API](https://wistia.com/support/developers/data-api).
 - `hashed_id` can be used to load an iframe on the front end i.e., `https://fast.wistia.net/embed/iframe/<hashed_id>`
+- `title` add a title
 
 ## License
 

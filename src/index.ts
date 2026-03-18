@@ -14,6 +14,12 @@ export const wistiaInput = definePlugin<Config>((config) => ({
     types: [
       {
         ...wistiaMedia,
+        fields: [
+          ...wistiaMedia.fields,
+          ...(config.fields ?? []).filter(
+            (f) => !wistiaMedia.fields.some((base) => base.name === f.name),
+          ),
+        ],
         ...wistiaMediaRender(config),
       },
     ],

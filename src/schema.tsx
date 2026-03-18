@@ -14,12 +14,14 @@ export const wistiaMedia = {
   ],
   preview: {
     select: {
-      title: 'id',
+      title: 'title',
+      subtitle: 'hashed_id',
     },
-     prepare({ title }: { title: String }) {
+    prepare({title, subtitle}: {title: string; subtitle: string}) {
       return {
-        title: `Wistia video ID: ${title}`
+        title: title || 'Wistia media',
+        subtitle,
       }
-    }
-  }
+    },
+  },
 }
