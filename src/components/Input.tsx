@@ -220,7 +220,11 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
   )
 
   // Add in any extra fields the user has defined
-  const extraFields = <Stack marginTop={4}>{renderDefault(props)}</Stack>
+  const extraFields = config.fields?.length
+    ? <Stack marginTop={4}>{renderDefault({...props, members: props.members.filter(
+        (m) => m.kind === 'field' && config.fields!.some((f) => f.name === m.name)
+      )})}</Stack>
+    : null
 
   // MARK: Media is selected
   if (mediaUrl) {

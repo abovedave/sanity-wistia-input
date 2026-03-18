@@ -30,7 +30,7 @@ export function Player({mediaUrl}: {mediaUrl: string}) {
     <div
       style={{
         width: '100%',
-        borderRadius: '5px',
+        borderRadius: '3px',
         overflow: 'hidden',
       }}
     >

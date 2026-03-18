@@ -6,17 +6,10 @@ export const wistiaMedia = {
     {
       type: 'number',
       name: 'id',
-      hidden: true,
     },
     {
       type: 'string',
       name: 'hashed_id',
-      hidden: true,
-    },
-    {
-      type: 'string',
-      name: 'title',
-      title: 'Title',
     },
   ],
   preview: {
