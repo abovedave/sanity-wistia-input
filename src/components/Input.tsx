@@ -183,6 +183,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
                 {visibleProject.media_count}
               </Badge>
               <Text title={visibleProject.updated} size={1}>
+                <b>Updated</b>{' '}
                 {new Date(visibleProject.updated).toLocaleDateString(undefined, {
                   day: 'numeric',
                   month: 'short',
