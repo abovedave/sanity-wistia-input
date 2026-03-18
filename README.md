@@ -62,13 +62,12 @@ export default {
 {
   id: 123456,
   hashed_id: 'abc123',
-  caption: 'abc' // or whatever your config.fields is
+  // plus any config.fields you define e.g.., caption: 'abc'
 }
 ```
 
-- `id` can be used to query the [Wistia Data API](https://wistia.com/support/developers/data-api).
+- `id` can be used to query the [Wistia Data API](https://docs.wistia.com/reference/getting-started-with-the-data-api).
 - `hashed_id` can be used to load an iframe on the front end i.e., `https://fast.wistia.net/embed/iframe/<hashed_id>`
-- `title` add a title
 
 ## License
 
