@@ -180,7 +180,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
                 </Badge>
               )}
               <Badge title={`${visibleProject.media_count} items`} tone="default">
-                {visibleProject.media_count}
+                {visibleProject.media_count} items
               </Badge>
               <Text title={visibleProject.updated} size={1}>
                 <b>Updated</b>{' '}
