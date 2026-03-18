@@ -18,7 +18,7 @@ export interface WistiaMedia {
 export interface WistaAPIProject {
   id: number
   name: string | ''
-  mediaCount: number | 0
+  media_count: number | 0
   created: string
   updated: string
   hashedId: string
@@ -35,6 +35,7 @@ export interface WistiaAPIMedias {
   updated: string
   hashed_id: string
   description: string | ''
+  section?: string
   thumbnail: WistiaAPIMediaThumbnail
 }
 

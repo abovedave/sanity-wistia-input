@@ -1,95 +1,40 @@
-import {useEffect, useState} from 'react'
-import {memo} from 'react'
-import {Spinner, Card, Flex, Text, Heading, Button, Stack, Badge, Tooltip} from '@sanity/ui'
+import {memo, useState, useMemo} from 'react'
+import {Card, Flex, Text, Heading, Button, Stack, Badge, Tooltip, Box} from '@sanity/ui'
 import {LaunchIcon} from '@sanity/icons'
 
 import {WistiaMedia, WistiaAPIMedias, WistaMediasGrouped, Config} from '../types'
 
-const resultsPerPage = 100
-
-const groupBy = (array: Array<WistiaAPIMedias>, key: string) => {
-  return array.reduce((rv: any, x: any) => {
-    ;(rv[x[key]] = rv[x[key]] || []).push(x)
+const groupBy = (array: WistiaAPIMedias[]): WistaMediasGrouped => {
+  return array.reduce((rv: WistaMediasGrouped, x) => {
+    const key = x.section ?? 'undefined'
+    rv[key] = rv[key] ? [...rv[key], x] : [x]
     return rv
   }, {})
 }
 
 const wistiaMediasComponent = ({
+  medias,
+  hasMore,
+  loadingMore,
   onVideoClick,
-  projectId,
+  onLoadMore,
   config,
 }: {
+  medias: WistiaAPIMedias[]
+  hasMore: boolean
+  loadingMore: boolean
   onVideoClick: (media: WistiaMedia) => void
-  projectId: number
+  onLoadMore: () => void
   config: Config
 }) => {
-  const [wistiaMedias, setwistiaMedias] = useState<WistaMediasGrouped>({})
-  const [loading, setLoading] = useState(false)
-  const [loadingMore, setLoadingMore] = useState(false)
-  const [page, setPage] = useState(1)
-  const [hasMore, setHasMore] = useState(false)
   const [hoveredId, setHoveredId] = useState<number | null>(null)
-
-  const handleVideoClick = (media: WistiaMedia) => {
-    onVideoClick(media)
-  }
-
-  const fetchMedias = (pageNum: number, append: boolean) => {
-    if (append) setLoadingMore(true)
-    else setLoading(true)
-
-    fetch(
-      `https://api.wistia.com/v1/medias.json?project_id=${projectId}&sort_by=name&page=${pageNum}&per_page=${resultsPerPage}`,
-      {
-        headers: {Authorization: `Bearer ${config.token}`},
-      },
-    )
-      .then((r) => r.json())
-      .then((data) => {
-        setHasMore(data.length === resultsPerPage)
-        setwistiaMedias((prev) => {
-          const next = groupBy(data, 'section')
-          if (!append) return next
-          const merged = {...prev}
-          Object.keys(next).forEach((section) => {
-            merged[section] = [...(merged[section] || []), ...next[section]]
-          })
-          return merged
-        })
-        if (append) setLoadingMore(false)
-        else setLoading(false)
-      })
-      .catch(console.error)
-  }
-
-  useEffect(() => {
-    if (!projectId) return
-    setPage(1)
-    fetchMedias(1, false)
-  }, [projectId, config.token])
-
-  const handleLoadMore = () => {
-    const nextPage = page + 1
-    setPage(nextPage)
-    fetchMedias(nextPage, true)
-  }
+  const groupedMedias = useMemo(() => groupBy(medias), [medias])
 
   return (
-    <div style={{minHeight: 300}}>
-      {loading && (
-        <Card padding={7}>
-          <Flex align="center" direction="column" gap={3} justify="center">
-            <Spinner muted />
-            <Text muted size={1}>
-              Loading media from Wistia…
-            </Text>
-          </Flex>
-        </Card>
-      )}
-
-      {Object.keys(wistiaMedias)?.length
-        ? Object.keys(wistiaMedias).map((section, index) => (
-            <div key={projectId + index}>
+    <>
+      {Object.keys(groupedMedias).length
+        ? Object.keys(groupedMedias).map((section) => (
+            <div key={section}>
               {section !== 'undefined' && (
                 <Card
                   padding={3}
@@ -102,29 +47,33 @@ const wistiaMediasComponent = ({
                   </Heading>
                 </Card>
               )}
-              {wistiaMedias[section].map((media: WistiaAPIMedias) => (
+              {groupedMedias[section].map((media: WistiaAPIMedias) => (
                 <Card
                   key={media.id}
                   padding={3}
                   paddingLeft={4}
                   radius={1}
                   style={{cursor: 'pointer'}}
-                  onClick={() => handleVideoClick({id: media.id, hashed_id: media.hashed_id})}
+                  onClick={() => onVideoClick({id: media.id, hashed_id: media.hashed_id})}
                   tone={hoveredId === media.id ? 'primary' : 'inherit'}
                   onMouseEnter={() => setHoveredId(media.id)}
                   onMouseLeave={() => setHoveredId(null)}
                   as="button"
                 >
                   <Flex gap={3} align="center">
-                    <img
-                      src={media.thumbnail.url}
-                      width={70}
-                      height={Math.round(70 / (media.thumbnail.width / media.thumbnail.height))}
-                      style={{borderRadius: 3, display: 'block', border: '1px solid var(--card-bg-color)'}}
-                      alt={media.name}
-                    />
+                    <Card padding={0} overflow="hidden" radius={2} shadow={1} flex="none">
+                      <img
+                        src={media.thumbnail.url}
+                        width={70}
+                        height={Math.round(70 / (media.thumbnail.width / media.thumbnail.height))}
+                        style={{
+                          display: 'block',
+                        }}
+                        alt={media.name}
+                      />
+                    </Card>
                     <Stack space={2}>
-                      <Text size={1} weight="semibold">
+                      <Text title={media.name} textOverflow="ellipsis" size={1} weight="semibold">
                         {media.name}
                       </Text>
                       <Text size={0} muted>
@@ -136,10 +85,17 @@ const wistiaMediasComponent = ({
                         })}
                       </Text>
                     </Stack>
-                    <Badge size={1} style={{marginLeft: 'auto'}} muted>
-                      {new Date(media.duration * 1000).toISOString().slice(11, 19)}
-                    </Badge>
-                    <Tooltip content={<Text size={1}>Open in Wistia</Text>} placement="top" fallbackPlacements={['left', 'bottom']} portal>
+                    <Box flex="none" style={{marginLeft: 'auto'}}>
+                      <Badge muted>
+                        {new Date(media.duration * 1000).toISOString().slice(11, 19)}
+                      </Badge>
+                    </Box>
+                    <Tooltip
+                      content={<Text size={1}>Open in Wistia</Text>}
+                      placement="top"
+                      fallbackPlacements={['left', 'bottom']}
+                      portal
+                    >
                       <Button
                         as="a"
                         href={`https://${config.accountSubdomain || 'app'}.wistia.com/media/${media.hashed_id}`}
@@ -156,8 +112,8 @@ const wistiaMediasComponent = ({
               ))}
             </div>
           ))
-        : !loading && (
-            <Card padding={4}>
+        : (
+            <Card padding={5}>
               <Text align="center" muted size={1}>
                 No media found.
               </Text>
@@ -168,13 +124,13 @@ const wistiaMediasComponent = ({
           <Button
             mode="bleed"
             text={loadingMore ? 'Loading…' : 'Show more'}
-            onClick={handleLoadMore}
+            onClick={onLoadMore}
             disabled={loadingMore}
             width="fill"
           />
         </Card>
       )}
-    </div>
+    </>
   )
 }
 
