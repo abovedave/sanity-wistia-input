@@ -15,7 +15,7 @@ export interface WistiaMedia {
   hashed_id?: string
 }
 
-export interface WistaAPIProject {
+export interface WistaAPIFolder {
   id: number
   name: string | ''
   media_count: number | 0

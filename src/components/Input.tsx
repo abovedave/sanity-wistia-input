@@ -10,7 +10,7 @@ import {
 } from '@sanity/icons'
 import {set, unset, setIfMissing} from 'sanity'
 
-import {WistiaMedia, WistiaAPIMedias, WistiaInputProps, WistaAPIProject} from '../types'
+import {WistiaMedia, WistiaAPIMedias, WistiaInputProps, WistaAPIFolder} from '../types'
 import {Player} from './Player'
 import Folder from './Folder'
 import Medias from './Medias'
@@ -23,17 +23,17 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
   const [isPickerMounted, setIsPickerMounted] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isFolderLoading, setIsFolderLoading] = useState(false)
-  const [selectedProject, setSelectedProject] = useState<WistaAPIProject | null>(null)
-  const [loadingProjectId, setLoadingProjectId] = useState<number | null>(null)
-  const [visibleProject, setVisibleProject] = useState<WistaAPIProject | null>(null)
+  const [selectedFolder, setSelectedFolder] = useState<WistaAPIFolder | null>(null)
+  const [loadingFolderId, setLoadingFolderId] = useState<number | null>(null)
+  const [visibleFolder, setVisibleFolder] = useState<WistaAPIFolder | null>(null)
 
   const {
-    data: projects,
-    loadingMore: projectsLoadingMore,
-    error: projectsError,
-    hasMore: hasMoreProjects,
-    loadMore: loadMoreProjects,
-  } = useWistiaData<WistaAPIProject>(
+    data: folders,
+    loadingMore: foldersLoadingMore,
+    error: foldersError,
+    hasMore: hasMoreFolders,
+    loadMore: loadMoreFolders,
+  } = useWistiaData<WistaAPIFolder>(
     isPickerMounted ? '/folders?sort_by=updated&sort_direction=0' : null,
     config,
     () => {
@@ -48,11 +48,11 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     hasMore: hasMoreMedias,
     loadMore: loadMoreMedias,
   } = useWistiaData<WistiaAPIMedias>(
-    selectedProject ? `/medias?folder_id=${selectedProject.id}&sort_by=name` : null,
+    selectedFolder ? `/medias?folder_id=${selectedFolder.id}&sort_by=name` : null,
     config,
     () => {
-      setLoadingProjectId(null)
-      setVisibleProject(selectedProject)
+      setLoadingFolderId(null)
+      setVisibleFolder(selectedFolder)
     },
   )
 
@@ -60,8 +60,8 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
     (newValue: WistiaMedia) => {
       setIsPickerMounted(false)
       setIsDialogOpen(false)
-      setSelectedProject(null)
-      setVisibleProject(null)
+      setSelectedFolder(null)
+      setVisibleFolder(null)
       onChange([
         setIfMissing({_type: schemaType.name}),
         set(newValue.hashed_id, ['hashed_id']),
@@ -88,15 +88,15 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
   const handleClosePicker = useCallback(() => {
     setIsPickerMounted(false)
     setIsDialogOpen(false)
-    setSelectedProject(null)
-    setVisibleProject(null)
-    setLoadingProjectId(null)
+    setSelectedFolder(null)
+    setVisibleFolder(null)
+    setLoadingFolderId(null)
     setIsFolderLoading(false)
   }, [])
 
-  const handleProjectClick = useCallback((project: WistaAPIProject) => {
-    setLoadingProjectId(project.id)
-    setSelectedProject(project)
+  const handleFolderClick = useCallback((folder: WistaAPIFolder) => {
+    setLoadingFolderId(folder.id)
+    setSelectedFolder(folder)
   }, [])
 
   // MARK: Config error
@@ -125,14 +125,14 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
       animate
       width={1}
       header={
-        visibleProject ? (
+        visibleFolder ? (
           <Stack space={3}>
             <Flex justify="space-between">
               <Button
                 icon={ChevronLeftIcon}
                 onClick={() => {
-                  setSelectedProject(null)
-                  setVisibleProject(null)
+                  setSelectedFolder(null)
+                  setVisibleFolder(null)
                 }}
                 mode="bleed"
                 padding={2}
@@ -141,7 +141,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
               />
               <Button
                 as="a"
-                href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${visibleProject.hashed_id}`}
+                href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${visibleFolder.hashed_id}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 icon={LaunchIcon}
@@ -154,11 +154,11 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
             <Flex justify="space-between" align="center" flex={1} paddingBottom={0}>
               <Stack space={3}>
                 <Heading as="h2" size={2}>
-                  {visibleProject.name}
+                  {visibleFolder.name}
                 </Heading>
-                {visibleProject.description ? (
+                {visibleFolder.description ? (
                   <Text textOverflow="ellipsis" size={1} muted>
-                    {visibleProject.description.replace(/<[^>]*>/g, '').trim()}
+                    {visibleFolder.description.replace(/<[^>]*>/g, '').trim()}
                   </Text>
                 ) : null}
               </Stack>
@@ -169,20 +169,20 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
         )
       }
       footer={
-        visibleProject ? (
+        visibleFolder ? (
           <Card tone="transparent" paddingX={4} paddingY={4}>
             <Flex align="center" justify="flex-start" gap={3}>
-              {!visibleProject.public && (
+              {!visibleFolder.public && (
                 <Badge tone="caution">
                   Private
                 </Badge>
               )}
-              <Badge title={`${visibleProject.media_count} items`} tone="default">
-                {visibleProject.media_count} items
+              <Badge title={`${visibleFolder.media_count} items`} tone="default">
+                {visibleFolder.media_count} items
               </Badge>
-              <Text title={visibleProject.updated} size={1}>
+              <Text title={visibleFolder.updated} size={1}>
                 <b>Updated</b>{' '}
-                {new Date(visibleProject.updated).toLocaleDateString(undefined, {
+                {new Date(visibleFolder.updated).toLocaleDateString(undefined, {
                   day: 'numeric',
                   month: 'short',
                   year: 'numeric',
@@ -195,16 +195,16 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
         ) : undefined
       }
     >
-      {!visibleProject ? (
+      {!visibleFolder ? (
         <Folder
           config={config}
-          projects={projects}
-          loadingProjectId={loadingProjectId}
-          error={projectsError}
-          hasMore={hasMoreProjects}
-          loadingMore={projectsLoadingMore}
-          onProjectClick={handleProjectClick}
-          onLoadMore={loadMoreProjects}
+          folders={folders}
+          loadingFolderId={loadingFolderId}
+          error={foldersError}
+          hasMore={hasMoreFolders}
+          loadingMore={foldersLoadingMore}
+          onFolderClick={handleFolderClick}
+          onLoadMore={loadMoreFolders}
         />
       ) : (
         <Medias

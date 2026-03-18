@@ -29,7 +29,7 @@ export default defineConfig({
       token: '<your token here>',
       accountSubdomain: '<your company url>', // Optional, i.e., <this bit>.wistia.com
       fields: [
-        // Optional, extra fields to capture with your media. Title is always present.
+        // Optional, extra fields to capture with your media.
         defineField({
           name: 'caption',
           type: 'text',
@@ -62,7 +62,7 @@ export default {
 {
   id: 123456,
   hashed_id: 'abc123',
-  title: 'abc'
+  caption: 'abc' // or whatever your config.fields is
 }
 ```
 

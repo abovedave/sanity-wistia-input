@@ -36,10 +36,8 @@ The plugin registers a single Sanity object type (`wistiaMedia`) with a custom i
 
 - `Input.tsx` — shown in edit mode. Manages picker dialog state. Returns the active state element as the root node (no fragment wrapper) so Sanity's parent container styles (`height: 100%`) apply correctly. The `Dialog` is rendered as a child of each state branch — it uses portals internally so it renders at `<body>` level regardless.
 - `Preview.tsx` — shown in block/list view mode. Renders `renderDefault` (title/subtitle) plus an iframe embed when a `hashed_id` is present.
-- `Folder.tsx` — project/folder list inside the picker dialog. Calls `GET /v1/projects.json`.
-- `Medias.tsx` — media list for a selected project. Calls `GET /v1/medias.json?project_id=`. Groups results by `section` for sticky section headers.
+- `Folder.tsx` — folder list inside the picker dialog. Calls `GET /modern/folder`.
+- `Medias.tsx` — media list for a selected folder. Calls `GET /modern/medias/?folder_id=`. Groups results by `section` for sticky section headers.
 - `Player.tsx` — iframe embed wrapper with 16:9 aspect ratio.
-
-**Wistia terminology:** The API calls them "projects"; the Wistia UI calls them "folders". Admin URLs use `/folders/{hashed_id}`.
 
 **Local testing:** The `.yalc/` directory contains a locally published copy of the package for use with `yalc`. Do not edit files there directly.

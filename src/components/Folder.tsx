@@ -1,25 +1,25 @@
 import {memo, useState} from 'react'
 import {Spinner, Card, Flex, Text, Box, Tooltip, Button, Badge, Stack} from '@sanity/ui'
-import {LockIcon, LaunchIcon, FolderIcon, CalendarIcon} from '@sanity/icons'
+import {LockIcon, LaunchIcon, FolderIcon} from '@sanity/icons'
 
-import {Config, WistaAPIProject} from '../types'
+import {Config, WistaAPIFolder} from '../types'
 
-const WistiaProjectsComponent = ({
-  projects,
-  loadingProjectId,
+const WistiaFoldersComponent = ({
+  folders,
+  loadingFolderId,
   error,
   hasMore,
   loadingMore,
-  onProjectClick,
+  onFolderClick,
   onLoadMore,
   config,
 }: {
-  projects: WistaAPIProject[]
-  loadingProjectId: number | null
+  folders: WistaAPIFolder[]
+  loadingFolderId: number | null
   error: string
   hasMore: boolean
   loadingMore: boolean
-  onProjectClick: (project: WistaAPIProject) => void
+  onFolderClick: (folder: WistaAPIFolder) => void
   onLoadMore: () => void
   config: Config
 }) => {
@@ -37,32 +37,32 @@ const WistiaProjectsComponent = ({
 
   return (
     <>
-      {projects.length
-        ? projects.map((project: WistaAPIProject) => (
+      {folders.length
+        ? folders.map((folder: WistaAPIFolder) => (
             <Card
-              key={project.id}
+              key={folder.id}
               paddingTop={3}
               paddingBottom={3}
               paddingRight={3}
               paddingLeft={4}
               radius={1}
               style={{cursor: 'pointer'}}
-              onClick={() => onProjectClick(project)}
+              onClick={() => onFolderClick(folder)}
               tone={
-                loadingProjectId === project.id || hoveredId === project.id ? 'primary' : 'inherit'
+                loadingFolderId === folder.id || hoveredId === folder.id ? 'primary' : 'inherit'
               }
-              onMouseEnter={() => setHoveredId(project.id)}
+              onMouseEnter={() => setHoveredId(folder.id)}
               onMouseLeave={() => setHoveredId(null)}
               as="button"
             >
               <Flex justify="space-between" align="center" gap={2}>
                 <Flex align="center" gap={3} paddingLeft={1}>
                   <Box flex="none">
-                    {loadingProjectId === project.id ?
+                    {loadingFolderId === folder.id ?
                       <Spinner size={2} />
                     :
                       <Text size={2}>
-                        {project.public ? (
+                        {folder.public ? (
                           <FolderIcon />
                         ) : (
                           <Box flex="none">
@@ -87,13 +87,13 @@ const WistiaProjectsComponent = ({
                   </Box>
                   <Stack space={2}>
                     <Text size={2} weight="semibold">
-                      {project.name}
+                      {folder.name}
                     </Text>
                   </Stack>
                 </Flex>
                 <Flex align="center" gap={3}>
-                  <Badge aria-label={`${project.media_count} media items`} tone="default">
-                    {project.media_count}
+                  <Badge aria-label={`${folder.media_count} media items`} tone="default">
+                    {folder.media_count}
                   </Badge>
                   <Tooltip
                     content={<Text size={1}>Open in Wistia</Text>}
@@ -103,7 +103,7 @@ const WistiaProjectsComponent = ({
                   >
                     <Button
                       as="a"
-                      href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${project.hashed_id}`}
+                      href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${folder.hashed_id}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       icon={LaunchIcon}
@@ -119,7 +119,7 @@ const WistiaProjectsComponent = ({
         : (
             <Card padding={4}>
               <Text align="center" muted size={1}>
-                No projects found.
+                No folders found.
               </Text>
             </Card>
           )}
@@ -138,4 +138,4 @@ const WistiaProjectsComponent = ({
   )
 }
 
-export default memo(WistiaProjectsComponent)
+export default memo(WistiaFoldersComponent)
