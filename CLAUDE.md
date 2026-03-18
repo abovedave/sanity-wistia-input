@@ -40,6 +40,6 @@ The plugin registers a single Sanity object type (`wistiaMedia`) with a custom i
 - `Medias.tsx` — media list for a selected project. Calls `GET /v1/medias.json?project_id=`. Groups results by `section` for sticky section headers.
 - `Player.tsx` — iframe embed wrapper with 16:9 aspect ratio.
 
-**Wistia terminology:** The API calls them "projects"; the Wistia UI calls them "folders". Admin URLs use `/folders/{hashedId}`.
+**Wistia terminology:** The API calls them "projects"; the Wistia UI calls them "folders". Admin URLs use `/folders/{hashed_id}`.
 
 **Local testing:** The `.yalc/` directory contains a locally published copy of the package for use with `yalc`. Do not edit files there directly.

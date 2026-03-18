@@ -61,7 +61,28 @@ const WistiaProjectsComponent = ({
                     {loadingProjectId === project.id ?
                       <Spinner size={2} />
                     :
-                      <Text size={2}><FolderIcon /></Text>
+                      <Text size={2}>
+                        {project.public ? (
+                          <FolderIcon />
+                        ) : (
+                          <Box flex="none">
+                            <Text size={2}>
+                              <Tooltip
+                                content={
+                                  <Text muted size={1}>
+                                    Private
+                                  </Text>
+                                }
+                                fallbackPlacements={['right', 'left']}
+                                placement="top"
+                                portal
+                              >
+                                <LockIcon />
+                              </Tooltip>
+                            </Text>
+                          </Box>
+                        )}
+                      </Text>
                     }
                   </Box>
                   <Stack space={2}>
@@ -82,24 +103,6 @@ const WistiaProjectsComponent = ({
                   <Badge aria-label={`${project.media_count} media items`} tone="default">
                     {project.media_count}
                   </Badge>
-                  {!project.public && (
-                    <Box flex="none">
-                      <Text size={2}>
-                        <Tooltip
-                          content={
-                            <Text muted size={1}>
-                              Private
-                            </Text>
-                          }
-                          fallbackPlacements={['right', 'left']}
-                          placement="top"
-                          portal
-                        >
-                          <LockIcon />
-                        </Tooltip>
-                      </Text>
-                    </Box>
-                  )}
                   <Tooltip
                     content={<Text size={1}>Open in Wistia</Text>}
                     placement="top"
@@ -108,7 +111,7 @@ const WistiaProjectsComponent = ({
                   >
                     <Button
                       as="a"
-                      href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${project.hashedId}`}
+                      href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${project.hashed_id}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       icon={LaunchIcon}

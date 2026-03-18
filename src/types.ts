@@ -21,9 +21,9 @@ export interface WistaAPIProject {
   media_count: number | 0
   created: string
   updated: string
-  hashedId: string
+  hashed_id: string
   public: boolean | true
-  publicId: string
+  public_id: string
   description: string | ''
 }
 

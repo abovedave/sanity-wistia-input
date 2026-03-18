@@ -141,7 +141,7 @@ const WistiaInputComponent = (props: WistiaInputProps) => {
               />
               <Button
                 as="a"
-                href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${visibleProject.hashedId}`}
+                href={`https://${config.accountSubdomain || 'app'}.wistia.com/folders/${visibleProject.hashed_id}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 icon={LaunchIcon}
