@@ -4,7 +4,7 @@
   "description": "Wistia input for Sanity v5",
   "repository": {
     "type": "git",
-    "url": "https://github.com/abovedave/sanity-wistia-input.git"
+    "url": "git+https://github.com/abovedave/sanity-wistia-input.git"
   },
   "keywords": [
     "sanity",
