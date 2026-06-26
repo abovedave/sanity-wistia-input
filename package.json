@@ -73,7 +73,7 @@
   "peerDependencies": {
     "react": "^18.3 || ^19",
     "react-dom": "^18.3 || ^19",
-    "sanity": "^5.0.0"
+    "sanity": "^5.0.0 || ^6.0.0-0"
   },
   "engines": {
     "node": ">=18"
