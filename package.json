@@ -68,7 +68,7 @@
     "react-is": "^19.2.0",
     "rimraf": "^6.1.2",
     "sanity": "^5.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "react": "^18.3 || ^19",
