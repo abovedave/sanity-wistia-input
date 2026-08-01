@@ -67,7 +67,7 @@
     "react-dom": "^19.2.0",
     "react-is": "^19.2.0",
     "rimraf": "^6.1.2",
-    "sanity": "^5.0.0",
+    "sanity": "^6.7.0",
     "typescript": "^6.0.3"
   },
   "peerDependencies": {
